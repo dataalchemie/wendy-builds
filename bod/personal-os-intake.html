@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal OS — Intake Questionnaire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ink:    #1a1a18;
+      --paper:  #f9f7f2;
+      --rule:   #d8d3c8;
+      --accent: #c0392b;
+      --muted:  #8a867e;
+      --line:   #e4e0d8;
+      --card:   #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #ede9e2;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      color: var(--ink);
+      padding: 48px 24px 80px;
+    }
+
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    }
+
+    /* HEADER */
+    .header {
+      padding: 48px 56px 36px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .header-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .header h1 em {
+      font-style: italic;
+      font-weight: 700;
+    }
+
+    .header-sub {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .header-deck {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 580px;
+      border-left: 2px solid var(--accent);
+      padding-left: 16px;
+    }
+
+    /* META ROW */
+    .meta-row {
+      padding: 18px 56px;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .meta-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meta-input {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--rule);
+      padding: 4px 0;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .meta-input:focus { border-bottom-color: var(--accent); }
+    .meta-input::placeholder { color: #ccc9c0; }
+
+    /* HOW TO USE */
+    .how-to-use {
+      padding: 20px 56px;
+      background: #f4f1eb;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .how-to-use-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .how-to-use ol {
+      padding-left: 18px;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .how-to-use code {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      background: #e4e0d8;
+      padding: 1px 6px;
+      border-radius: 3px;
+      color: var(--ink);
+    }
+
+    /* INTRO */
+    .intro {
+      padding: 24px 56px;
+      border-bottom: 1px solid var(--line);
+      background: var(--card);
+    }
+
+    .intro p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* BLOCK */
+    .block {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .block-header {
+      padding: 28px 56px 20px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .block-header:hover .block-title { color: var(--accent); }
+
+    .block-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .block-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 900;
+      transition: color 0.15s;
+    }
+
+    .block-note {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .block-toggle {
+      font-family: 'DM Mono', monospace;
+      font-size: 16px;
+      color: var(--muted);
+      margin-left: 12px;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+
+    .block-toggle.open { transform: rotate(90deg); }
+
+    .block-body {
+      padding: 0 56px 36px;
+      display: none;
+    }
+
+    .block-body.open { display: block; }
+
+    /* QUESTIONS */
+    .question-block {
+      margin-bottom: 32px;
+    }
+
+    .question-block:last-child { margin-bottom: 0; }
+
+    .q-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    .q-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 30px;
+    }
+
+    .q-text-wrap { flex: 1; }
+
+    .q-text {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.4;
+      margin-bottom: 3px;
+    }
+
+    .q-hint {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .q-answer {
+      margin-left: 46px;
+      width: calc(100% - 46px);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--ink);
+      background: #faf8f4;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 10px 14px;
+      resize: vertical;
+      min-height: 80px;
+      outline: none;
+      line-height: 1.7;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .q-answer:focus {
+      border-color: var(--accent);
+      background: var(--card);
+    }
+
+    .q-answer::placeholder {
+      color: #ccc9c0;
+      font-style: italic;
+    }
+
+    /* Multi-example question */
+    .q-examples {
+      margin-left: 46px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .q-example-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    /* ACTION PANEL */
+    .action-panel {
+      padding: 36px 56px;
+      background: #f4f1eb;
+      border-top: 2px solid var(--ink);
+    }
+
+    .action-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      padding: 12px 22px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-secondary { background: var(--ink); color: var(--paper); }
+    .btn-secondary:hover { opacity: 0.85; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--rule);
+    }
+    .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+    /* COPY OUTPUT */
+    .copy-output { display: none; margin-top: 20px; }
+    .copy-output.visible { display: block; }
+
+    .copy-output-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .copy-output-box {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      background: var(--ink);
+      color: #c8c4bc;
+      padding: 20px;
+      border-radius: 2px;
+      white-space: pre-wrap;
+      line-height: 1.7;
+      max-height: 360px;
+      overflow-y: auto;
+    }
+
+    .copy-confirm {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: #4a9a6a;
+      margin-top: 8px;
+      display: none;
+    }
+    .copy-confirm.visible { display: block; }
+
+    /* NEXT STEPS */
+    .next-steps {
+      padding: 36px 56px 48px;
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .next-steps .ns-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .next-steps h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+
+    .steps-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .steps-list li {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      flex-shrink: 0;
+      padding-top: 2px;
+      letter-spacing: 0.06em;
+    }
+
+    .step-body {
+      font-size: 14px;
+      font-weight: 300;
+      color: #c8c4bc;
+      line-height: 1.6;
+    }
+
+    .step-body strong { color: #ffffff; font-weight: 500; }
+
+    .step-body code {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      background: #2a2d38;
+      padding: 1px 7px;
+      border-radius: 3px;
+      color: #e8a020;
+    }
+
+    .tip-box {
+      border: 1px solid #2a2d38;
+      border-left: 3px solid var(--accent);
+      padding: 14px 18px;
+    }
+
+    .tip-box .tip-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .tip-box p {
+      font-size: 13px;
+      font-weight: 300;
+      color: #8a8a8a;
+      line-height: 1.6;
+    }
+
+    .tip-box p strong { color: #c8c4bc; font-weight: 500; }
+
+    /* FOOTER */
+    .footer {
+      padding: 16px 56px;
+      border-top: 1px solid #252830;
+      background: var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #3a3d48;
+    }
+
+    .footer-note {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #3a3d48;
+    }
+
+    /* PRINT */
+    @media print {
+      body { background: white; padding: 0; }
+      .page { box-shadow: none; border: none; max-width: 100%; }
+      .next-steps, .footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .question-block { page-break-inside: avoid; }
+      .action-panel, .how-to-use, .copy-output { display: none; }
+      .block-body { display: block !important; }
+      .block-toggle { display: none; }
+      .q-answer {
+        background: white;
+        border: none;
+        border-bottom: 1px solid var(--line);
+        border-radius: 0;
+        min-height: 60px;
+        resize: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .header, .meta-row, .how-to-use, .intro, .block-header, .block-body, .action-panel, .next-steps, .footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      .header h1 { font-size: 36px; }
+      .q-answer, .q-examples { margin-left: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">Personal Board of Directors — Pre-Work</div>
+    <h1>Personal <em>OS</em></h1>
+    <div class="header-sub">Intake Questionnaire</div>
+    <p class="header-deck">
+      Before building your board, Claude needs to understand your operating system —
+      not your resume, but the actual terrain of your life right now.
+      Answer as honestly as you can. There are no right answers, only useful ones.
+      Start with Blocks 2 and 3 — they are the highest leverage.
+    </p>
+  </div>
+
+  <!-- META -->
+  <div class="meta-row">
+    <div class="meta-item">
+      <span class="meta-label">Your Name</span>
+      <input class="meta-input" id="meta-name" type="text" placeholder="First Last" autocomplete="off" />
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Date</span>
+      <input class="meta-input" id="meta-date" type="text" placeholder="Month DD, YYYY" autocomplete="off" />
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Current Role</span>
+      <input class="meta-input" id="meta-role" type="text" placeholder="Title / Company" autocomplete="off" />
+    </div>
+  </div>
+
+  <!-- HOW TO USE -->
+  <div class="how-to-use">
+    <div class="how-to-use-label">How this works</div>
+    <ol>
+      <li>Fill in your answers. Start with Block 2 (Goals) and Block 3 (Visibility) — skip what you don't know yet.</li>
+      <li>Click <strong>Copy for Claude</strong> at the bottom — it assembles all your answers into one ready-to-paste prompt.</li>
+      <li>Open Claude Code, paste your answers, and type <code>/build-bod</code> to start building your board.</li>
+      <li>Claude will synthesize your responses into a Personal OS summary before generating any board candidates.</li>
+    </ol>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <p>"The quality of your board depends entirely on the quality of your answers here.
+    Take your time. Be specific. The more honest and concrete you are,
+    the more precisely your board will be calibrated to you."</p>
+  </div>
+
+  <!-- BLOCK 1 -->
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock('block1')">
+      <span class="block-num">Block 01</span>
+      <span class="block-title">Identity</span>
+      <span class="block-toggle" id="toggle-block1">&#9658;</span>
+    </div>
+    <div class="block-body" id="block1">
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">1</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What three words would your best professional advocates use to describe you?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q1" placeholder="The words they already use, not the ones you wish they'd use..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">2</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What three words would you want them to use that they probably don't yet?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q2" placeholder="The gap between Q1 and Q2 is often where the real work lives..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">3</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What do you do that most people in your field can't or won't?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q3" placeholder="Your genuine edge — what makes you different, not just better..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">4</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What do you consistently undervalue in yourself that others see clearly?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q4" placeholder="The thing people compliment you for that you still don't quite believe..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">5</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What is your biggest professional blind spot?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q5" placeholder="Be honest here — vague answers produce vague board advice..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">6</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What type of work puts you in a flow state?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q6" placeholder="When you lose track of time because the work itself is energizing..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">7</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What type of work drains you even when you do it well?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q7" placeholder="The work you are good at but that costs you something every time..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">8</div>
+          <div class="q-text-wrap">
+            <div class="q-text">When you have failed or stalled, what is usually the root cause?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q8" placeholder="Look for the pattern, not the one-off explanation..."></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BLOCK 2 -->
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock('block2')">
+      <span class="block-num">Block 02</span>
+      <span class="block-title">Goals and Ambition</span>
+      <span class="block-note">Start Here</span>
+      <span class="block-toggle" id="toggle-block2">&#9658;</span>
+    </div>
+    <div class="block-body" id="block2">
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">9</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What does your professional life look like in 3 years — specifically?</div>
+            <div class="q-hint">Title, company type, impact, income range, lifestyle. Specific, not aspirational.</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q9" placeholder="Paint the real picture. Not 'I want to be successful' — what does success actually look like in concrete terms?"></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">10</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What does "winning" on your biggest goal look like? How would you know you had made it?</div>
+            <div class="q-hint">Make it concrete enough that you could tell a stranger whether it happened or not</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q10" placeholder="Describe success in terms specific enough that a stranger could tell you whether it happened or not — title, scope, recognition, income, lifestyle..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">11</div>
+          <div class="q-text-wrap">
+            <div class="q-text">Who are 5 people currently in roles you want to be in? What do they have that you don't yet?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q11" placeholder="Name real people. Be specific about the gap — skills, network, reputation, experience, positioning..." style="min-height: 120px;"></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">12</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What is the one professional achievement that, if you hit it in the next 18 months, would change your trajectory?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q12" placeholder="One thing. The lever that moves the most other things."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">13</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What are you tolerating right now that you should not be?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q13" placeholder="The situations, habits, or dynamics you keep accepting and keep meaning to change..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">14</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What have you been saying you will do "when the time is right" that you should just start now?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q14" placeholder="The things you keep deferring that you know are actually ready..."></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BLOCK 3 -->
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock('block3')">
+      <span class="block-num">Block 03</span>
+      <span class="block-title">Visibility and Positioning</span>
+      <span class="block-note">Start Here</span>
+      <span class="block-toggle" id="toggle-block3">&#9658;</span>
+    </div>
+    <div class="block-body" id="block3">
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">15</div>
+          <div class="q-text-wrap">
+            <div class="q-text">Who are the 10 to 20 people who, if they became genuine advocates for you, would change everything?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q15" placeholder="Names, roles, or types. The people whose endorsement would open doors nothing else would..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">16</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What do those people currently think of you? What is the gap between that and where you want to be?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q16" placeholder="Be honest. Are you on their radar at all? Do they see you as a peer or in a different category?"></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">17</div>
+          <div class="q-text-wrap">
+            <div class="q-text">Where do you want to be visible?</div>
+            <div class="q-hint">e.g. social media presence, speaking engagements, writing, industry events, conferences, internal visibility, podcasts</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q17" placeholder="Be specific about the rooms and platforms that would move the needle for you..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">18</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What is your thought leadership angle — the thing you want to own intellectually in your space?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q18" placeholder="The intersection of topics and perspectives that is distinctly yours..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">19</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What content have you created that landed well? What made it work?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q19" placeholder="Specific examples — posts, talks, documents, frameworks. What got traction and why?"></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">20</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What prevents you from putting yourself out there more?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q20" placeholder="Be honest — perfectionism, fear of judgment, lack of time, unclear POV, waiting for permission..."></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BLOCK 4 -->
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock('block4')">
+      <span class="block-num">Block 04</span>
+      <span class="block-title">Operating Style</span>
+      <span class="block-toggle" id="toggle-block4">&#9658;</span>
+    </div>
+    <div class="block-body" id="block4">
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">21</div>
+          <div class="q-text-wrap">
+            <div class="q-text">Describe your ideal week — how is your time split between deep work, meetings, relationships, and strategic thinking?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q21" placeholder="Not the week you have — the week that would make you most effective and most energized..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">22</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What is your current biggest time sink that delivers the least return?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q22" placeholder="Where does your time go that you know is not moving you forward?"></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">23</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What decisions do you make that you should be delegating?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q23" placeholder="The low-leverage decisions you hold onto out of habit, preference, or a lack of trust..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">24</div>
+          <div class="q-text-wrap">
+            <div class="q-text">When do you do your best thinking?</div>
+            <div class="q-hint">Time of day, environment, alone vs. with others</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q24" placeholder="Be specific — morning alone, late at night, walking, in conversation, after exercise..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">25</div>
+          <div class="q-text-wrap">
+            <div class="q-text">How do you make big decisions? Walk through your actual process.</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q25" placeholder="Not the process you think you should have — the one you actually use. Including the messy parts."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">26</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What is your relationship with planning? Do you over-plan, under-plan, or avoid it?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q26" placeholder="And what does that pattern cost you?"></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">27</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What systems do you currently use for managing your time, tasks, and goals? What is broken about them?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q27" placeholder="Apps, frameworks, habits. What works, what doesn't, what keeps breaking down..."></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BLOCK 5 -->
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock('block5')">
+      <span class="block-num">Block 05</span>
+      <span class="block-title">Voice and Communication</span>
+      <span class="block-toggle" id="toggle-block5">&#9658;</span>
+    </div>
+    <div class="block-body" id="block5">
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">28</div>
+          <div class="q-text-wrap">
+            <div class="q-text">Paste 3 examples of writing you are proud of.</div>
+            <div class="q-hint">Emails, posts, documents, threads — anything that reflects your voice at its best</div>
+          </div>
+        </div>
+        <div class="q-examples">
+          <div>
+            <div class="q-example-label">Example 1</div>
+            <textarea class="q-answer" id="q28a" style="margin-left:0; width:100%;" placeholder="Paste text or describe the piece..."></textarea>
+          </div>
+          <div>
+            <div class="q-example-label">Example 2</div>
+            <textarea class="q-answer" id="q28b" style="margin-left:0; width:100%;" placeholder="Paste text or describe the piece..."></textarea>
+          </div>
+          <div>
+            <div class="q-example-label">Example 3</div>
+            <textarea class="q-answer" id="q28c" style="margin-left:0; width:100%;" placeholder="Paste text or describe the piece..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">29</div>
+          <div class="q-text-wrap">
+            <div class="q-text">How do you write when you are being strategic vs. when you are being casual?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q29" placeholder="What changes — tone, structure, word choice, length? What stays the same?"></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">30</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What is your natural communication superpower?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q30" placeholder="The thing you do better than most in how you communicate — speaking, writing, listening, framing..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">31</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What communication habit do you have that you know undermines you?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q31" placeholder="The pattern that costs you — over-explaining, hedging, rushing, going too long, under-asserting..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">32</div>
+          <div class="q-text-wrap">
+            <div class="q-text">When you are trying to influence a decision maker, what is your go-to approach?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q32" placeholder="Your natural strategy when you need to move someone who has the power to say yes or no..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">33</div>
+          <div class="q-text-wrap">
+            <div class="q-text">How do you want to sound in your most important professional context — the tone you want to project?</div>
+            <div class="q-hint">e.g. written work, public speaking, key meetings, online presence, client conversations</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q33" placeholder="Describe the voice and impression you are deliberately building in the room or platform that matters most to you..."></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BLOCK 6 -->
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock('block6')">
+      <span class="block-num">Block 06</span>
+      <span class="block-title">Values and Non-Negotiables</span>
+      <span class="block-toggle" id="toggle-block6">&#9658;</span>
+    </div>
+    <div class="block-body" id="block6">
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">34</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What are your 3 to 5 core values?</div>
+            <div class="q-hint">Name the ones that have actually cost you something — those are the real ones</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q34" placeholder="Not aspirational values — the ones you have already proven you will protect under pressure..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">35</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What do you want to be known for as a person, not just a professional?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q35" placeholder="The legacy beyond the title — what you want people to say about who you were, not just what you did..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">36</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What do you care about in the world beyond your career?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q36" placeholder="Causes, communities, concerns — the things you would work on even if no one paid you..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">37</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What would you regret not having done in 10 years?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q37" placeholder="The honest answer, not the safe one — what would genuinely haunt you?"></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">38</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What does financial success mean to you — specifically?</div>
+            <div class="q-hint">Put a number on it if you can — vague answers about "security" are not actionable</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q38" placeholder="A number, a milestone, a lifestyle — whatever financial success actually means to you in concrete terms..."></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BLOCK 7 -->
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock('block7')">
+      <span class="block-num">Block 07</span>
+      <span class="block-title">Current Reality</span>
+      <span class="block-toggle" id="toggle-block7">&#9658;</span>
+    </div>
+    <div class="block-body" id="block7">
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">39</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What projects and commitments are you currently running?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q39" placeholder="Work, side projects, community roles, family commitments, personal goals — the full inventory of what has a claim on your time..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">40</div>
+          <div class="q-text-wrap">
+            <div class="q-text">Which of those are genuinely moving you toward your goals? Which are not?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q40" placeholder="Be honest about the gap between what you are doing and what is actually serving your bigger goals..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">41</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What are you doing out of habit or obligation that is not moving you forward?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q41" placeholder="The recurring things on your calendar or to-do list that you know you should stop or change..."></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">42</div>
+          <div class="q-text-wrap">
+            <div class="q-text">Who are the 3 to 5 people in your life you trust most for honest feedback?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q42" placeholder="People who tell you the truth even when it is uncomfortable — and who are you missing?"></textarea>
+      </div>
+
+      <div class="question-block">
+        <div class="q-head">
+          <div class="q-num">43</div>
+          <div class="q-text-wrap">
+            <div class="q-text">What is the last piece of critical feedback you received that was probably right?</div>
+          </div>
+        </div>
+        <textarea class="q-answer" id="q43" placeholder="The thing someone said that you resisted at first but knew was true..."></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ACTION PANEL -->
+  <div class="action-panel">
+    <div class="action-label">When you are ready</div>
+    <div class="action-row">
+      <button class="btn btn-primary" onclick="generatePrompt()">Copy for Claude</button>
+      <button class="btn btn-secondary" onclick="expandAll()">Expand All Blocks</button>
+      <button class="btn btn-ghost" onclick="window.print()">Print / PDF</button>
+      <button class="btn btn-ghost" onclick="clearAll()">Clear All</button>
+    </div>
+    <div class="copy-output" id="copy-output">
+      <div class="copy-output-label">Your Claude prompt — copy everything below and paste it into Claude Code, then type /build-bod</div>
+      <div class="copy-output-box" id="output-box"></div>
+      <div class="copy-confirm" id="copy-confirm">Copied to clipboard. Paste it into Claude Code and type /build-bod to begin.</div>
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="next-steps">
+    <div class="ns-label">What to Do Next</div>
+    <h2>Building Your Board</h2>
+    <ol class="steps-list">
+      <li>
+        <span class="step-num">01</span>
+        <div class="step-body">
+          <strong>Click "Copy for Claude"</strong> above. It assembles all your answers into a single formatted prompt.
+        </div>
+      </li>
+      <li>
+        <span class="step-num">02</span>
+        <div class="step-body">
+          <strong>Open Claude Code</strong> in the project folder your facilitator set up. Paste your answers and type <code>/build-bod</code> to begin.
+        </div>
+      </li>
+      <li>
+        <span class="step-num">03</span>
+        <div class="step-body">
+          <strong>Review your Personal OS summary.</strong> Claude will synthesize everything into a portrait of your operating system. Correct anything that does not ring true before moving to board selection.
+        </div>
+      </li>
+      <li>
+        <span class="step-num">04</span>
+        <div class="step-body">
+          <strong>Choose your board from 20 candidates</strong> generated specifically for your OS. Pick 10, then cut to 8. Claude will flag redundancies and push back on at least 2 of your choices. Let it — that friction is the point.
+        </div>
+      </li>
+      <li>
+        <span class="step-num">05</span>
+        <div class="step-body">
+          <strong>Designate a Chairman</strong> — the member you trust most to synthesize the board's recommendation when no consensus is reached. When the board is divided after 3 rounds, they step in, pull together the strongest threads from both sides, and deliver one clear, actionable path forward.
+        </div>
+      </li>
+      <li>
+        <span class="step-num">06</span>
+        <div class="step-body">
+          <strong>Your <code>/journey-bod</code> command is generated automatically</strong> at the end. From that point forward, type <code>/journey-bod [your question]</code> any time you have a decision to work through. Your board convenes immediately.
+        </div>
+      </li>
+    </ol>
+    <div class="tip-box">
+      <div class="tip-label">A note on honesty</div>
+      <p>
+        Claude generates your board based entirely on what you share here.
+        <strong>Vague answers produce generic boards.</strong> The more specific and honest
+        you are about your goals, gaps, and the version of yourself you are becoming,
+        the more precisely your board will be calibrated to actually help you.
+        You do not need to answer every question — but the ones you skip are usually the most important ones.
+      </p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-mark">Personal OS — Intake</div>
+    <div class="footer-note">Personal Board of Directors &nbsp;/&nbsp; Claude Code</div>
+  </div>
+
+</div>
+
+<script>
+  // Auto-fill date
+  (function() {
+    var d = new Date();
+    var months = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
+    document.getElementById('meta-date').value =
+      months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+  })();
+
+  function toggleBlock(id) {
+    var body = document.getElementById(id);
+    var toggle = document.getElementById('toggle-' + id);
+    var isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    toggle.classList.toggle('open', !isOpen);
+  }
+
+  function expandAll() {
+    ['block1','block2','block3','block4','block5','block6','block7'].forEach(function(id) {
+      document.getElementById(id).classList.add('open');
+      document.getElementById('toggle-' + id).classList.add('open');
+    });
+  }
+
+  function val(id) {
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+
+  function line(label, answer) {
+    return label + '\n' + (answer || '[not answered]') + '\n';
+  }
+
+  function generatePrompt() {
+    var name = val('meta-name') || 'Not provided';
+    var role = val('meta-role') || 'Not provided';
+
+    var prompt = 'Hi Claude! I have completed my Personal OS intake questionnaire.\n';
+    prompt += 'Please use these answers to build my Personal Board of Directors via /build-bod.\n\n';
+    prompt += 'NAME: ' + name + '\n';
+    prompt += 'CURRENT ROLE: ' + role + '\n\n';
+
+    prompt += '--- BLOCK 1: IDENTITY ---\n\n';
+    prompt += line('1. Words my advocates use to describe me:', val('q1'));
+    prompt += line('2. Words I want them to use that they probably don\'t yet:', val('q2'));
+    prompt += line('3. What I do that most people in my field can\'t or won\'t:', val('q3'));
+    prompt += line('4. What I consistently undervalue that others see clearly:', val('q4'));
+    prompt += line('5. My biggest professional blind spot:', val('q5'));
+    prompt += line('6. Work that puts me in a flow state:', val('q6'));
+    prompt += line('7. Work that drains me even when I do it well:', val('q7'));
+    prompt += line('8. When I fail or stall, the root cause is usually:', val('q8'));
+
+    prompt += '\n--- BLOCK 2: GOALS AND AMBITION ---\n\n';
+    prompt += line('9. My professional life in 3 years (specific):', val('q9'));
+    prompt += line('10. What "winning" on my biggest goal looks like:', val('q10'));
+    prompt += line('11. Five people in roles I want — and what they have that I don\'t yet:', val('q11'));
+    prompt += line('12. The one achievement in 18 months that would change my trajectory:', val('q12'));
+    prompt += line('13. What I am tolerating that I should not be:', val('q13'));
+    prompt += line('14. What I have been deferring that I should just start now:', val('q14'));
+
+    prompt += '\n--- BLOCK 3: VISIBILITY AND POSITIONING ---\n\n';
+    prompt += line('15. People whose advocacy would change everything:', val('q15'));
+    prompt += line('16. What those people currently think of me / the gap:', val('q16'));
+    prompt += line('17. Where I want to be visible:', val('q17'));
+    prompt += line('18. My thought leadership angle:', val('q18'));
+    prompt += line('19. Content that has landed well and why:', val('q19'));
+    prompt += line('20. What prevents me from putting myself out there more:', val('q20'));
+
+    prompt += '\n--- BLOCK 4: OPERATING STYLE ---\n\n';
+    prompt += line('21. My ideal week:', val('q21'));
+    prompt += line('22. My biggest time sink with lowest return:', val('q22'));
+    prompt += line('23. Decisions I should be delegating:', val('q23'));
+    prompt += line('24. When and where I do my best thinking:', val('q24'));
+    prompt += line('25. How I actually make big decisions:', val('q25'));
+    prompt += line('26. My relationship with planning:', val('q26'));
+    prompt += line('27. Systems I use and what is broken about them:', val('q27'));
+
+    prompt += '\n--- BLOCK 5: VOICE AND COMMUNICATION ---\n\n';
+    var writing = [val('q28a'), val('q28b'), val('q28c')].filter(Boolean).join('\n\n');
+    prompt += line('28. Writing examples I am proud of:', writing || '[not provided]');
+    prompt += line('29. How I write strategically vs. casually:', val('q29'));
+    prompt += line('30. My natural communication superpower:', val('q30'));
+    prompt += line('31. The communication habit that undermines me:', val('q31'));
+    prompt += line('32. My go-to approach when influencing decision makers:', val('q32'));
+    prompt += line('33. The tone I want to project in my most important professional context:', val('q33'));
+
+    prompt += '\n--- BLOCK 6: VALUES AND NON-NEGOTIABLES ---\n\n';
+    prompt += line('34. My 3 to 5 core values:', val('q34'));
+    prompt += line('35. What I want to be known for as a person:', val('q35'));
+    prompt += line('36. What I care about beyond my career:', val('q36'));
+    prompt += line('37. What I would regret not having done in 10 years:', val('q37'));
+    prompt += line('38. What financial success means to me specifically:', val('q38'));
+
+    prompt += '\n--- BLOCK 7: CURRENT REALITY ---\n\n';
+    prompt += line('39. Projects and commitments I am currently running:', val('q39'));
+    prompt += line('40. Which of those are moving me toward my goals vs. not:', val('q40'));
+    prompt += line('41. What I am doing out of habit or obligation that is not moving me forward:', val('q41'));
+    prompt += line('42. People I trust most for honest feedback:', val('q42'));
+    prompt += line('43. Last piece of critical feedback that was probably right:', val('q43'));
+
+    prompt += '\n--- END OF INTAKE ---\n';
+    prompt += 'Please synthesize a Personal OS summary for me to review before we select board candidates.';
+
+    var outputEl = document.getElementById('output-box');
+    var outputPanel = document.getElementById('copy-output');
+    outputEl.textContent = prompt;
+    outputPanel.classList.add('visible');
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(prompt).then(function() {
+        var confirm = document.getElementById('copy-confirm');
+        confirm.classList.add('visible');
+        setTimeout(function() { confirm.classList.remove('visible'); }, 4000);
+      });
+    }
+
+    outputPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function clearAll() {
+    if (!confirm('Clear all answers? This cannot be undone.')) return;
+    var ids = ['meta-name','meta-role','q1','q2','q3','q4','q5','q6','q7','q8',
+               'q9','q10','q11','q12','q13','q14','q15','q16','q17','q18','q19','q20',
+               'q21','q22','q23','q24','q25','q26','q27',
+               'q28a','q28b','q28c','q29','q30','q31','q32','q33',
+               'q34','q35','q36','q37','q38',
+               'q39','q40','q41','q42','q43'];
+    ids.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('copy-output').classList.remove('visible');
+  }
+</script>
+
+</body>
+</html>

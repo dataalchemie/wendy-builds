@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Quorum — Build Your Own Board of Directors</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ink:     #1a1a18;
+      --paper:   #f7f5f0;
+      --rule:    #d4cfc5;
+      --accent:  #c0392b;
+      --muted:   #8a867e;
+      --card-bg: #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 0 0 80px;
+    }
+
+    /* ── MASTHEAD ── */
+    .masthead {
+      padding: 56px 64px 40px;
+      border-bottom: 2px solid var(--ink);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .masthead-left { max-width: 640px; }
+
+    .label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 7vw, 88px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      margin-top: 18px;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--muted);
+      max-width: 460px;
+      line-height: 1.5;
+    }
+
+    .masthead-meta {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .masthead-meta .issue {
+      font-family: 'Playfair Display', serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: var(--rule);
+      line-height: 1;
+    }
+
+    .masthead-meta .edition {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── DECK ── */
+    .deck {
+      padding: 28px 64px;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .deck-rule {
+      width: 32px;
+      height: 2px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .deck p {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--ink);
+      max-width: 720px;
+    }
+
+    /* ── GRID ── */
+    .grid-section {
+      padding: 48px 64px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .section-header h2 {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 36px 32px 40px;
+      border: 1px solid var(--rule);
+      position: relative;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.12s; }
+    .card:nth-child(3) { animation-delay: 0.19s; }
+    .card:nth-child(4) { animation-delay: 0.26s; }
+    .card:nth-child(5) { animation-delay: 0.33s; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover {
+      background: var(--ink);
+      color: var(--paper);
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+
+    .card:hover .card-num { color: var(--accent); }
+    .card:hover .card-title { color: #ffffff; }
+    .card:hover .card-body { color: #c8c4bc; }
+    .card:hover .card-tags span { border-color: #4a4a46; color: #8a867e; }
+    .card:hover blockquote { border-color: #444; }
+    .card:hover blockquote p { color: #b0aca4; }
+    .card:hover .prompt-label { color: var(--accent); }
+
+    .card-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-num::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+      max-width: 40px;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 14px;
+      color: var(--ink);
+    }
+
+    .card-body {
+      font-size: 14px;
+      font-weight: 300;
+      color: #5a5650;
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .prompt-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    blockquote {
+      border-left: 2px solid var(--rule);
+      padding: 12px 16px;
+      margin-top: 16px;
+    }
+
+    blockquote p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    /* pill tags */
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .card-tags span {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--rule);
+      padding: 3px 8px;
+      border-radius: 2px;
+      color: var(--muted);
+    }
+
+    /* ── OUTCOME STRIP ── */
+    .outcome-strip {
+      margin: 0 64px;
+      padding: 40px 48px;
+      background: var(--ink);
+      color: var(--paper);
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .outcome-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .outcome-label em {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-style: normal;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .outcome-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 36px;
+    }
+
+    .outcome-list li {
+      font-size: 14px;
+      font-weight: 300;
+      color: #c8c4bc;
+      line-height: 1.5;
+      padding-top: 12px;
+      border-top: 1px solid #333;
+    }
+
+    .outcome-list li strong {
+      display: block;
+      color: #ffffff;
+      font-weight: 500;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 28px 64px 0;
+      border-top: 1px solid var(--rule);
+      margin-top: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer .footer-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    footer .footer-note {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── EXAMPLE SECTION ── */
+    .example-section {
+      background: #0e1016;
+      padding: 56px 64px 64px;
+      margin-top: 0;
+    }
+
+    .example-section .section-header {
+      margin-bottom: 36px;
+    }
+
+    .example-section .section-header h2 {
+      color: #636878;
+    }
+
+    .example-section .section-header::after {
+      background: #252830;
+    }
+
+    .example-intro {
+      font-size: 14px;
+      font-weight: 300;
+      color: #636878;
+      max-width: 680px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .example-intro em {
+      color: #a0a8b8;
+      font-style: normal;
+    }
+
+    /* three-column terminal layout */
+    .terminal-trio {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr 1.3fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .mini-term {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #252830;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .mini-term-bar {
+      background: #1c1f27;
+      border-bottom: 1px solid #252830;
+      padding: 0 14px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mini-dots { display: flex; gap: 5px; }
+    .mini-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+    }
+    .md-r { background: #ff5f57; }
+    .md-y { background: #ffbd2e; }
+    .md-g { background: #3fb950; }
+
+    .mini-tab {
+      font-size: 10px;
+      color: #636878;
+      letter-spacing: 0.04em;
+      margin: 0 auto;
+    }
+
+    .mini-term-body {
+      background: #0e1016;
+      padding: 20px 18px;
+    }
+
+    /* terminal text styles */
+    .t-prompt {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .t-arrow { color: #3fb950; font-size: 11px; padding-top: 1px; }
+    .t-cmd   { color: #e8a020; font-size: 11px; line-height: 1.5; }
+
+    .t-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e8a020;
+      border: 1px solid #7a5210;
+      padding: 2px 7px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .t-rule {
+      height: 1px;
+      background: #1e2028;
+      margin: 12px 0;
+    }
+
+    .t-body {
+      font-size: 11px;
+      color: #7a8090;
+      line-height: 1.7;
+    }
+
+    .t-body em  { color: #a0a8b8; font-style: normal; }
+    .t-body strong { color: #e2e4e9; font-weight: 500; }
+
+    /* round deliberation rows */
+    .round-block { margin-bottom: 14px; }
+
+    .round-head {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #e8a020;
+      margin-bottom: 8px;
+    }
+
+    .verdict-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1px solid #161820;
+    }
+    .verdict-row:last-child { border-bottom: none; }
+
+    .vr-name {
+      font-size: 10px;
+      color: #a0a8b8;
+      width: 84px;
+      flex-shrink: 0;
+    }
+
+    .vr-note {
+      font-size: 10px;
+      color: #4a5060;
+      flex: 1;
+      line-height: 1.4;
+    }
+
+    .vr-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 1px 6px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .badge-pause  { background: #1a2a3a; color: #58a6c8; }
+    .badge-pivot  { background: #2a1a10; color: #e8a020; }
+    .badge-proceed{ background: #0d2016; color: #3fb950; }
+    .badge-dac    { background: #1e1520; color: #a070c8; }
+
+    .tally-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #252830;
+    }
+
+    .tally-item {
+      font-size: 10px;
+      color: #636878;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tally-n {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .tally-pause  { color: #58a6c8; }
+    .tally-pivot  { color: #e8a020; }
+    .tally-proceed{ color: #3fb950; }
+
+    /* verdict terminal */
+    .chairman-banner {
+      background: #1c1a10;
+      border: 1px solid #7a5210;
+      border-radius: 3px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+
+    .chairman-banner .cb-label {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e8a020;
+      margin-bottom: 6px;
+    }
+
+    .chairman-banner .cb-body {
+      font-size: 10.5px;
+      color: #a09060;
+      line-height: 1.6;
+    }
+
+    .framework-mini {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+    }
+
+    .framework-mini th {
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #636878;
+      text-align: left;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #252830;
+    }
+
+    .framework-mini td {
+      font-size: 10.5px;
+      padding: 7px 0;
+      vertical-align: top;
+      border-bottom: 1px solid #161820;
+      line-height: 1.5;
+    }
+
+    .framework-mini tr:last-child td { border-bottom: none; }
+
+    .fm-step { color: #e8a020; width: 68px; }
+    .fm-action { color: #a0a8b8; padding-left: 12px; }
+    .fm-action .dim { color: #4a5060; }
+
+    .dissent-mini {
+      border-left: 2px solid #7a5210;
+      padding-left: 10px;
+      margin-top: 12px;
+    }
+
+    .dissent-mini p {
+      font-size: 10px;
+      color: #636878;
+      line-height: 1.6;
+    }
+
+    .dissent-mini p em { color: #a0a8b8; font-style: normal; }
+    .dissent-mini p strong { color: #e2e4e9; font-weight: 500; }
+
+    .status-mini {
+      background: #1c1f27;
+      border-top: 1px solid #252830;
+      padding: 7px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .sm-item {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: #636878;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .sm-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #e8a020;
+      box-shadow: 0 0 4px rgba(232,160,32,0.5);
+    }
+
+    /* phase label sits above each terminal */
+    .terminal-phase {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .terminal-phase .phase-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e8a020;
+    }
+
+    .terminal-phase .phase-name {
+      font-size: 13px;
+      font-weight: 400;
+      color: #a0a8b8;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* stacked vertical layout */
+    .trio-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .trio-item {
+      margin-bottom: 8px;
+    }
+
+    .trio-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 20px;
+      color: #2a2d38;
+      font-size: 20px;
+      line-height: 1;
+      margin: 6px 0;
+      letter-spacing: -2px;
+    }
+
+    /* deliberation: show all 3 rounds in a 3-column grid */
+    .rounds-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: #161820;
+    }
+
+    .round-col {
+      background: #0e1016;
+      padding: 16px 16px 12px;
+    }
+
+    /* wider name column now that we have space */
+    .vr-name { width: 90px; }
+    .vr-note  { font-size: 11px; }
+    .vr-badge { font-size: 10px; }
+
+    @media (max-width: 768px) {
+      .masthead, .deck, .grid-section { padding-left: 24px; padding-right: 24px; }
+      .masthead { flex-direction: column; align-items: flex-start; }
+      .masthead-meta { display: none; }
+      .outcome-strip { margin: 0 24px; grid-template-columns: 1fr; }
+      .outcome-list { grid-template-columns: 1fr; }
+      footer { padding: 24px 24px 0; flex-direction: column; gap: 12px; text-align: center; }
+      .example-section { padding: 40px 24px; }
+      .rounds-grid { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #0e1016; }
+      .example-section { padding: 32px 40px; }
+      .mini-term { box-shadow: none; border: 1px solid #252830; }
+      .trio-arrow { color: #3a3d48; }
+      .rounds-grid { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead-left">
+      <div class="label">Claude Code &mdash; Prompt Sequence</div>
+      <h1>The<br/>Quorum</h1>
+      <p class="tagline">Bridge the gap between scattered advice and a structured advisory board that works for you. Five prompts. One deployed command.</p>
+    </div>
+    <div class="masthead-meta">
+      <div class="issue">05</div>
+      <div class="edition">Prompts &nbsp;/&nbsp; Board Series</div>
+    </div>
+  </header>
+
+  <!-- DECK -->
+  <div class="deck">
+    <div class="deck-rule"></div>
+    <p>These are the prompts, in order, that take you from concept to a fully deployed <code style="font-family:'DM Mono',monospace;font-size:13px;">/journey-bod</code> command. Use them exactly as written or adapt them to your situation. Each one builds on the last.</p>
+  </div>
+
+  <!-- PROMPT CARDS -->
+  <section class="grid-section">
+    <div class="section-header">
+      <h2>The Prompt Sequence</h2>
+    </div>
+
+    <div class="cards">
+
+      <!-- 01 -->
+      <div class="card">
+        <div class="card-num">01</div>
+        <div class="card-title">The Starting Point</div>
+        <div class="card-body">Introduce the concept and ask Claude to generate 20 candidate board members from your personal OS. You select up to 8 across three archetypes.</div>
+        <div class="card-tags">
+          <span>Mentor</span><span>Sponsor</span><span>Challenger</span>
+        </div>
+        <div class="prompt-label" style="margin-top:20px;">Use this prompt</div>
+        <blockquote>
+          <p>Hi Claude, I'd like to build out a personal board of directors. It's a small group of trusted advisors — real people, dead or alive — that you personally select to help guide your career and big decisions. A strong board has three types: a Mentor, a Sponsor, and a Challenger. Based on my personal OS, which famous people should be on my board? Max 8. Give me 20 options and summarize each in 7 words or less.</p>
+        </blockquote>
+      </div>
+
+      <!-- 02 -->
+      <div class="card">
+        <div class="card-num">02</div>
+        <div class="card-title">Build the Command</div>
+        <div class="card-body">Turn your 8 board members into a live <code style="font-family:'DM Mono',monospace;font-size:12px;">/journey-bod</code> command. All 8 run as parallel agents simultaneously using a Ralph Loop, debate in up to 3 rounds, then converge on a recommendation.</div>
+        <div class="card-tags">
+          <span>Ralph Loop</span><span>Parallel Agents</span><span>Consensus</span>
+        </div>
+        <div class="prompt-label" style="margin-top:20px;">Use this prompt</div>
+        <blockquote>
+          <p>Now build me a /journey-bod command I can run anytime I have a question or decision I'm wrestling with. Pull in all 8 perspectives at once using a Ralph Loop — run all 8 board members as parallel agents simultaneously. Then let them react in up to 3 rounds of debate. One synthesized recommendation. If they can't agree after 3 rounds, [Chairman name] synthesizes a clear recommendation from the full deliberation.</p>
+        </blockquote>
+      </div>
+
+      <!-- 03 -->
+      <div class="card">
+        <div class="card-num">03</div>
+        <div class="card-title">Add Context and Memory</div>
+        <div class="card-body">Give the board awareness of its own history. Each session saves as a unique file. Future sessions open from the last meeting by default, or you can point to any session you want.</div>
+        <div class="card-tags">
+          <span>Session History</span><span>Continuity</span><span>Confirmation</span>
+        </div>
+        <div class="prompt-label" style="margin-top:20px;">Use this prompt</div>
+        <blockquote>
+          <p>A few things to add: before the board starts, tell me what it thinks I'm asking and let me confirm. Instead of overwriting the same file every time, save each session as its own file. By default, when I reconvene, pick up from the most recent session — but let me point to a specific one if I want.</p>
+        </blockquote>
+      </div>
+
+      <!-- 04 -->
+      <div class="card">
+        <div class="card-num">04</div>
+        <div class="card-title">Make the Board Push Back</div>
+        <div class="card-body">Remove the sycophancy. If the board believes it's right and you challenge them, they hold the line. Add a round-count to every session so you know how contested the decision really was.</div>
+        <div class="card-tags">
+          <span>Conviction</span><span>Integrity</span><span>Round Count</span>
+        </div>
+        <div class="prompt-label" style="margin-top:20px;">Use this prompt</div>
+        <blockquote>
+          <p>I want to make sure the board isn't just telling me what I want to hear. If I push back, I don't want them to roll over. If they believe they're right, hold the line — be smart, be respectful, but don't cave. Also show me how many rounds it took to reach a decision.</p>
+        </blockquote>
+      </div>
+
+      <!-- 05 -->
+      <div class="card">
+        <div class="card-num">05</div>
+        <div class="card-title">Make It Cheaper to Run</div>
+        <div class="card-body">Cut token cost without losing what makes the board useful. Tighter word limits per round, one agent per member across all rounds, summaries instead of full transcripts, and automatic second-brain logging.</div>
+        <div class="card-tags">
+          <span>Token Efficiency</span><span>Auto-Save</span><span>Summaries</span>
+        </div>
+        <div class="prompt-label" style="margin-top:20px;">Use this prompt</div>
+        <blockquote>
+          <p>Help me make it more token efficient without losing what makes it useful: 75 words max in Round 1, 50 in Round 2, 30 in Round 3. One agent per board member across all 3 rounds. Between rounds, each agent gets only a one-line summary of others' positions. Don't show me back-and-forth — process in memory and surface only the final synthesis. Auto-save to my second brain.</p>
+        </blockquote>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXAMPLE SESSION -->
+  <section class="example-section">
+    <div class="section-header">
+      <h2>Live Session Example</h2>
+    </div>
+
+    <p class="example-intro">
+      Here is a real board session, start to finish. The question, the three-round deliberation,
+      and the Chairman's synthesized recommendation — all from a single <em>/journey-bod</em> invocation.
+    </p>
+
+    <div class="trio-wrapper">
+
+      <!-- TERMINAL 1: THE QUESTION -->
+      <div class="trio-item">
+        <div class="terminal-phase">
+          <span class="phase-num">Phase 01</span>
+          <span class="phase-name">The Question</span>
+        </div>
+        <div class="mini-term">
+          <div class="mini-term-bar">
+            <div class="mini-dots">
+              <div class="mini-dot md-r"></div>
+              <div class="mini-dot md-y"></div>
+              <div class="mini-dot md-g"></div>
+            </div>
+            <div class="mini-tab">jordan@bod — ~/TrainingCourse</div>
+          </div>
+          <div class="mini-term-body">
+            <div class="t-prompt">
+              <span class="t-arrow">❯</span>
+              <span class="t-cmd">/journey-bod</span>
+            </div>
+            <div class="t-label">The Question</div>
+            <div class="t-rule"></div>
+            <div class="t-body">
+              I'm energized by building AI agents, but I spent <strong>two weeks of tokens</strong>
+              building a morning brief that surfaces consolidated tasks, open commitments,
+              and nuanced waiting items across disparate sources.
+              <br/><br/>
+              It has real utility — but <em>was the investment worth it?</em>
+              <br/><br/>
+              Help me think about when to time-box and token-box my efforts based on
+              <strong>utility</strong>, <strong>habit-building likelihood</strong>,
+              and <strong>learnings</strong>.
+            </div>
+          </div>
+          <div class="status-mini">
+            <div class="sm-item"><div class="sm-dot"></div>8 board members standing by</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trio-arrow">&#8595;</div>
+
+      <!-- TERMINAL 2: DELIBERATION — 3 rounds in columns inside one terminal -->
+      <div class="trio-item">
+        <div class="terminal-phase">
+          <span class="phase-num">Phase 02</span>
+          <span class="phase-name">The Deliberation — Ralph Loop, 3 Rounds</span>
+        </div>
+        <div class="mini-term">
+          <div class="mini-term-bar">
+            <div class="mini-dots">
+              <div class="mini-dot md-r"></div>
+              <div class="mini-dot md-y"></div>
+              <div class="mini-dot md-g"></div>
+            </div>
+            <div class="mini-tab">Ralph Loop — 3 Rounds in Parallel</div>
+          </div>
+
+          <!-- three-column round grid inside one terminal -->
+          <div class="rounds-grid">
+
+            <!-- Round 1 -->
+            <div class="round-col">
+              <div class="round-head">Round 01 — Independent</div>
+              <div class="verdict-row">
+                <span class="vr-name">Buffett</span>
+                <span class="vr-note">No pre-investment checklist. Tinkering ≠ strategy.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Drucker</span>
+                <span class="vr-note">Two weeks displaced what? Real cost = opportunity cost.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Ogilvy</span>
+                <span class="vr-note">Write the behavior change, not the feature, before building.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Jobs</span>
+                <span class="vr-note">Built comprehensive before testing smallest viable.</span>
+                <span class="vr-badge badge-pivot">PIVOT</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Graham</span>
+                <span class="vr-note">Build the dumbest version in one day. Validate the habit first.</span>
+                <span class="vr-badge badge-pivot">PIVOT</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Hopper</span>
+                <span class="vr-note">It works. Extract the lesson and keep moving.</span>
+                <span class="vr-badge badge-proceed">PROCEED</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Franklin</span>
+                <span class="vr-note">3-axis test: autonomous? compounding? survives a week idle?</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Oprah</span>
+                <span class="vr-note">Tuition or avoidance? Who are you becoming by building this?</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="tally-row">
+                <div class="tally-item"><span class="tally-n tally-pause">5</span> PAUSE</div>
+                <div class="tally-item"><span class="tally-n tally-pivot">2</span> PIVOT</div>
+                <div class="tally-item"><span class="tally-n tally-proceed">1</span> PROCEED</div>
+              </div>
+            </div>
+
+            <!-- Round 2 -->
+            <div class="round-col">
+              <div class="round-head">Round 02 — Cross-Pollination</div>
+              <div class="verdict-row">
+                <span class="vr-name">Buffett</span>
+                <span class="vr-note">Franklin's 3-axis test + 3-day hard cap before prototype.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Drucker</span>
+                <span class="vr-note">Behavior first, minimum build, then 14-day measurement.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Ogilvy</span>
+                <span class="vr-note">Oprah's tuition/avoidance reframe changes the calculus.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Jobs</span>
+                <span class="vr-note">PAUSE wants more gates. I want smaller builds. Not the same.</span>
+                <span class="vr-badge badge-pivot">PIVOT</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Graham</span>
+                <span class="vr-note">Day-one signal beats a 14-day discipline measurement.</span>
+                <span class="vr-badge badge-pivot">PIVOT</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Hopper</span>
+                <span class="vr-note">Framework emerges from doing, not deliberating.</span>
+                <span class="vr-badge badge-proceed">PROCEED</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Franklin</span>
+                <span class="vr-note">Enthusiasm ≠ system. Build the feedback loop first.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Oprah</span>
+                <span class="vr-note">Day-one usage is a proxy, not a truth. Some tools reveal slowly.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="tally-row">
+                <div class="tally-item"><span class="tally-n tally-pause">5</span> PAUSE</div>
+                <div class="tally-item"><span class="tally-n tally-pivot">2</span> PIVOT</div>
+                <div class="tally-item"><span class="tally-n tally-proceed">1</span> PROCEED</div>
+              </div>
+            </div>
+
+            <!-- Round 3 -->
+            <div class="round-col">
+              <div class="round-head">Round 03 — Convergence</div>
+              <div class="verdict-row">
+                <span class="vr-name">Buffett</span>
+                <span class="vr-note">3 numbers before any build: value, frequency, stop condition.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Drucker</span>
+                <span class="vr-note">Behavior change + 14-day measure. That is the whole system.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Ogilvy</span>
+                <span class="vr-note">Research the behavior. Build the minimum. Honor the utility.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Jobs</span>
+                <span class="vr-note">Accept PAUSE only if max 3-day build rule is the center.</span>
+                <span class="vr-badge badge-dac">D&amp;C</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Graham</span>
+                <span class="vr-note">Accept PAUSE only if day-one usage is the primary signal.</span>
+                <span class="vr-badge badge-dac">D&amp;C</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Hopper</span>
+                <span class="vr-note">Accept PAUSE only if a written lesson log keeps builds moving.</span>
+                <span class="vr-badge badge-dac">D&amp;C</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Franklin</span>
+                <span class="vr-note">3-axis test + build log, reviewed quarterly.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="verdict-row">
+                <span class="vr-name">Oprah</span>
+                <span class="vr-note">Tuition or avoidance before. Behavior check after 30 days.</span>
+                <span class="vr-badge badge-pause">PAUSE</span>
+              </div>
+              <div class="tally-row">
+                <div class="tally-item"><span class="tally-n tally-pause">5</span> PAUSE</div>
+                <div class="tally-item"><span class="tally-n" style="color:#a070c8;">3</span> D&amp;C</div>
+                <div class="tally-item" style="color:#636878;font-size:9px;">No 6/8 → Chairman</div>
+              </div>
+            </div>
+
+          </div><!-- /rounds-grid -->
+
+          <div class="status-mini">
+            <div class="sm-item">3 rounds complete</div>
+            <div class="sm-item" style="margin-left:auto;color:#a070c8;">Deadlock — Chairman activated</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trio-arrow">&#8595;</div>
+
+      <!-- TERMINAL 3: VERDICT -->
+      <div class="trio-item">
+        <div class="terminal-phase">
+          <span class="phase-num">Phase 03</span>
+          <span class="phase-name">The Recommendation</span>
+        </div>
+        <div class="mini-term">
+          <div class="mini-term-bar">
+            <div class="mini-dots">
+              <div class="mini-dot md-r"></div>
+              <div class="mini-dot md-y"></div>
+              <div class="mini-dot md-g"></div>
+            </div>
+            <div class="mini-tab">Chairman's Synthesis — Warren Buffett</div>
+          </div>
+          <div class="mini-term-body">
+
+            <div class="t-label">Board Recommendation — PAUSE</div>
+            <div class="t-rule"></div>
+
+            <div class="chairman-banner">
+              <div class="cb-label">Warren Buffett — Chairman</div>
+              <div class="cb-body">
+                The split: PAUSE wanted a pre-build framework. PIVOT wanted smaller builds that make the framework unnecessary.
+                What the debate missed: Jordan did not run over budget —
+                he had no budget. The framework is a <em style="color:#e2e4e9;font-style:normal;">pre-commitment device</em>,
+                not a gate on building.
+              </div>
+            </div>
+
+            <table class="framework-mini">
+              <thead>
+                <tr>
+                  <th>Step</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="fm-step">Before</td>
+                  <td class="fm-action">Write the behavior change, the day-one test, and the stop condition <span class="dim">— 20 minutes max</span></td>
+                </tr>
+                <tr>
+                  <td class="fm-step">During</td>
+                  <td class="fm-action">3-day cap before first use; build the smallest version that tests the behavior</td>
+                </tr>
+                <tr>
+                  <td class="fm-step">After 30d</td>
+                  <td class="fm-action">Franklin's three-axis check + Oprah's tuition-or-avoidance question</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="dissent-mini">
+              <p>
+                Jobs &amp; Graham's condition preserved: the <strong>day-one signal</strong>
+                — did you open it the first morning without reminding yourself? —
+                is the single most predictive data point.
+                <em>Everything else is measuring discipline, not utility.</em>
+              </p>
+            </div>
+
+          </div>
+          <div class="status-mini">
+            <div class="sm-item"><div class="sm-dot"></div>PAUSE</div>
+            <div class="sm-item">3 rounds</div>
+            <div class="sm-item">Chairman's Synthesis</div>
+            <div class="sm-item" style="margin-left:auto;">2026-04-13</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /trio-wrapper -->
+  </section>
+
+  <!-- OUTCOME STRIP -->
+  <div class="outcome-strip">
+    <div class="outcome-label">
+      <em>What you end up with</em>
+      After Prompt 5
+    </div>
+    <ul class="outcome-list">
+      <li>
+        <strong>Deployed /journey-bod command</strong>
+        Customized to your 8 board members, ready to run from any Claude Code session.
+      </li>
+      <li>
+        <strong>Session history</strong>
+        A running archive of every board conversation, growing with each meeting.
+      </li>
+      <li>
+        <strong>Deliberation engine</strong>
+        Runs fast, holds its positions, and signals how hard the consensus was to reach.
+      </li>
+      <li>
+        <strong>Automatic logging</strong>
+        Every session writes itself to your second brain without any manual steps.
+      </li>
+    </ul>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-mark">The Quorum</div>
+    <div class="footer-note">Build Your Own Board of Directors &nbsp;&bull;&nbsp; Claude Code Demo Project</div>
+  </footer>
+
+</body>
+</html>
