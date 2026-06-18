@@ -37,4 +37,4 @@ Everything here was built for my own use first, then shared because others asked
 ## Connect
 
 - [LinkedIn](https://www.linkedin.com/in/wlogan)
-- [Personal Site](https://wendykaylogan.com)
+- [Personal Site](https://wendyklogan.com)
