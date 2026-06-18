@@ -1,6 +1,6 @@
 # /build-bod — Build Your Personal Board of Directors
 
-This is a 5-stage guided journey that ends with a fully personalized /journey-bod skill file you can deploy immediately. By the end, you'll have a board of 8 carefully chosen advisors — real people, dead or alive — each selected to serve your specific goals, blind spots, and the version of yourself you're actively becoming. This is not a generic exercise. Every stage builds on what you reveal, and the final output is a complete, ready-to-run /journey-bod command customized entirely to you.
+This is a 5-stage guided journey that ends with a fully personalized /bod skill file you can deploy immediately. By the end, you'll have a board of 8 carefully chosen advisors — real people, dead or alive — each selected to serve your specific goals, blind spots, and the version of yourself you're actively becoming. This is not a generic exercise. Every stage builds on what you reveal, and the final output is a complete, ready-to-run /bod command customized entirely to you.
 
 ---
 
@@ -81,6 +81,6 @@ Deliver Board Composition Table, Archetype Balance, Push/Pull Dynamic, and Why T
 
 ---
 
-## Stage 5 of 5 — Generate Your Personalized /journey-bod Skill
+## Stage 5 of 5 — Generate Your Personalized /bod Skill
 
-Generate a complete, deployment-ready /journey-bod skill file. No placeholder text. Display in a single markdown code block.
+Generate a complete, deployment-ready /bod skill file. No placeholder text. Display in a single markdown code block.
