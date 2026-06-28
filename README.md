@@ -19,12 +19,12 @@ The intake tool that powers the board-building process. Maps your operating doma
 **[build-bod.md](bod/build-bod.md)**
 The raw Claude Code command file. Open it to see how the skill is structured — stages, gates, orchestrator rules, synthesis protocol.
 
-### AI Upskilling (`/upskilling`)
+### AI Upskilling
 
 **[AI Upskilling Roadmap](https://dataalchemie.github.io/wendy-builds/upskilling/ai-upskilling-roadmap.html)**
 A structured roadmap handout from Data Alchemie Group for executives and teams building AI literacy. Covers foundation, application, and governance tiers.
 
-### The Helm (`/helm`)
+### The Helm
 
 **[Build Your Own Helm](https://dataalchemie.github.io/wendy-builds/helm/build-your-own-helm.html)**
 A personal goals and weekly rhythm system built from five Claude Code slash commands: plan the week, review the week, take a monthly pulse check, score the quarter, and draft the next one. Works in Claude (web, CLI, desktop), Codex, and Gemini. The longer you run it, the sharper it gets.
@@ -35,9 +35,7 @@ The five commands: `/weekly-checkin`, `/weekly-checkout`, `/pulse-check`, `/scor
 
 ## Why This Repo Exists
 
-I believe the most credible thing a builder can do is show the work. Not slides about AI strategy. Actual artifacts that run.
-
-Everything here was built for my own use first, then shared because others asked.
+The most credible thing I can do as a builder is show the work — real artifacts that run, not decks about AI strategy. Everything here started as infrastructure I built for myself, and I started sharing it when people kept asking how I actually operate.
 
 ---
 
