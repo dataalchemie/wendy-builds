@@ -26,7 +26,7 @@ A structured roadmap handout from Data Alchemie Group for executives and teams b
 
 ### Personal Operating Rhythm
 
-**[Build Your Own Helm](https://dataalchemie.github.io/wendy-builds/helm/build-your-own-helm.html)**
+**[Personal Operating Rhythm](https://dataalchemie.github.io/wendy-builds/helm/build-your-own-helm.html)**
 A personal goals and weekly rhythm system built from five Claude Code slash commands: plan the week, review the week, take a monthly pulse check, score the quarter, and draft the next one. Works in Claude (web, CLI, desktop), Codex, and Gemini. The longer you run it, the sharper it gets.
 
 The five commands: `/weekly-checkin`, `/weekly-checkout`, `/pulse-check`, `/score-okrs`, `/draft-okrs`
