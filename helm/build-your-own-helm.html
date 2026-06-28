@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Helm — Personal Goals and Weekly Rhythm System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ink:     #1a1a18;
+      --paper:   #f7f5f0;
+      --rule:    #d4cfc5;
+      --accent:  #c0392b;
+      --muted:   #8a867e;
+      --card-bg: #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 0 0 80px;
+    }
+
+    /* MASTHEAD */
+    .masthead {
+      padding: 56px 64px 40px;
+      border-bottom: 2px solid var(--ink);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .masthead-left { max-width: 640px; }
+
+    .label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 7vw, 88px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      margin-top: 18px;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--muted);
+      max-width: 460px;
+      line-height: 1.5;
+    }
+
+    .masthead-meta {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .masthead-meta .issue {
+      font-family: 'Playfair Display', serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: var(--rule);
+      line-height: 1;
+    }
+
+    .masthead-meta .edition {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* DECK */
+    .deck {
+      padding: 28px 64px;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .deck-rule {
+      width: 32px;
+      height: 2px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .deck p {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--ink);
+      max-width: 720px;
+    }
+
+    /* PREREQUISITES SECTION */
+    .prereq-section {
+      padding: 48px 64px;
+      border-bottom: 1px solid var(--rule);
+      background: #faf8f3;
+    }
+
+    .prereq-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .prereq-header h2 {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .prereq-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .prereq-intro {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink);
+      max-width: 680px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .prereq-intro a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .prereq-intro a:hover { opacity: 0.75; }
+
+    .prereq-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .prereq-item {
+      background: var(--card-bg);
+      border: 1px solid var(--rule);
+      padding: 24px 28px 28px;
+    }
+
+    .prereq-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .prereq-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+
+    .prereq-body {
+      font-size: 13px;
+      font-weight: 300;
+      color: #5a5650;
+      line-height: 1.65;
+    }
+
+    .prereq-body a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .prereq-body a:hover { opacity: 0.75; }
+
+    .prereq-required {
+      display: inline-block;
+      margin-top: 12px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    /* GRID */
+    .grid-section {
+      padding: 48px 64px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .section-header h2 {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 36px 32px 40px;
+      border: 1px solid var(--rule);
+      position: relative;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.12s; }
+    .card:nth-child(3) { animation-delay: 0.19s; }
+    .card:nth-child(4) { animation-delay: 0.26s; }
+    .card:nth-child(5) { animation-delay: 0.33s; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover {
+      background: var(--ink);
+      color: var(--paper);
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+
+    .card:hover .card-num { color: var(--accent); }
+    .card:hover .card-title { color: #ffffff; }
+    .card:hover .card-body { color: #c8c4bc; }
+    .card:hover .card-tags span { border-color: #4a4a46; color: #8a867e; }
+    .card:hover blockquote { border-color: #444; }
+    .card:hover blockquote p { color: #b0aca4; }
+    .card:hover .prompt-label { color: var(--accent); }
+    .card:hover .prompt-sublabel { color: #636060; }
+
+    .card-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-num::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+      max-width: 40px;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 14px;
+      color: var(--ink);
+    }
+
+    .card-body {
+      font-size: 14px;
+      font-weight: 300;
+      color: #5a5650;
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .prompt-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .prompt-sublabel {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #b8b4ac;
+      margin: 12px 0 6px;
+    }
+
+    blockquote {
+      border-left: 2px solid var(--rule);
+      padding: 12px 16px;
+      margin-top: 16px;
+    }
+
+    blockquote p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .card-tags span {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--rule);
+      padding: 3px 8px;
+      border-radius: 2px;
+      color: var(--muted);
+    }
+
+    /* PLATFORM SECTION */
+    .platform-section {
+      padding: 48px 64px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      background: #faf8f3;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2px;
+      margin-top: 8px;
+    }
+
+    .platform-card {
+      background: var(--card-bg);
+      border: 1px solid var(--rule);
+      padding: 20px 20px 22px;
+    }
+
+    .platform-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .platform-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .platform-note {
+      font-size: 12px;
+      font-weight: 300;
+      color: #6a6660;
+      line-height: 1.55;
+    }
+
+    .platform-intro {
+      font-size: 14px;
+      font-weight: 300;
+      color: #5a5650;
+      max-width: 640px;
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    /* OUTCOME STRIP */
+    .outcome-strip {
+      margin: 0 64px;
+      padding: 40px 48px;
+      background: var(--ink);
+      color: var(--paper);
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .outcome-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .outcome-label em {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-style: normal;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .outcome-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 36px;
+    }
+
+    .outcome-list li {
+      font-size: 14px;
+      font-weight: 300;
+      color: #c8c4bc;
+      line-height: 1.5;
+      padding-top: 12px;
+      border-top: 1px solid #333;
+    }
+
+    .outcome-list li strong {
+      display: block;
+      color: #ffffff;
+      font-weight: 500;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 28px 64px 0;
+      border-top: 1px solid var(--rule);
+      margin-top: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer .footer-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    footer .footer-note {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* EXAMPLE SECTION */
+    .example-section {
+      background: #0e1016;
+      padding: 56px 64px 64px;
+      margin-top: 0;
+    }
+
+    .example-section .section-header { margin-bottom: 36px; }
+    .example-section .section-header h2 { color: #636878; }
+    .example-section .section-header::after { background: #252830; }
+
+    .example-intro {
+      font-size: 14px;
+      font-weight: 300;
+      color: #636878;
+      max-width: 680px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .example-intro em { color: #a0a8b8; font-style: normal; }
+
+    /* terminal */
+    .trio-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .trio-item { margin-bottom: 8px; }
+
+    .trio-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 20px;
+      color: #2a2d38;
+      font-size: 20px;
+      line-height: 1;
+      margin: 6px 0;
+      letter-spacing: -2px;
+    }
+
+    .terminal-phase {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .terminal-phase .phase-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e8a020;
+    }
+
+    .terminal-phase .phase-name {
+      font-size: 13px;
+      font-weight: 400;
+      color: #a0a8b8;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .mini-term {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #252830;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .mini-term-bar {
+      background: #1c1f27;
+      border-bottom: 1px solid #252830;
+      padding: 0 14px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mini-dots { display: flex; gap: 5px; }
+    .mini-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .md-r { background: #ff5f57; }
+    .md-y { background: #ffbd2e; }
+    .md-g { background: #3fb950; }
+
+    .mini-tab {
+      font-size: 10px;
+      color: #636878;
+      letter-spacing: 0.04em;
+      margin: 0 auto;
+    }
+
+    .mini-term-body {
+      background: #0e1016;
+      padding: 20px 18px;
+    }
+
+    .t-prompt {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .t-arrow { color: #3fb950; font-size: 11px; padding-top: 1px; }
+    .t-cmd   { color: #e8a020; font-size: 11px; line-height: 1.5; }
+
+    .t-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e8a020;
+      border: 1px solid #7a5210;
+      padding: 2px 7px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .t-rule { height: 1px; background: #1e2028; margin: 12px 0; }
+
+    .t-body {
+      font-size: 11px;
+      color: #7a8090;
+      line-height: 1.7;
+    }
+
+    .t-body em  { color: #a0a8b8; font-style: normal; }
+    .t-body strong { color: #e2e4e9; font-weight: 500; }
+
+    .signal-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 4px 0;
+      border-bottom: 1px solid #161820;
+    }
+
+    .signal-row:last-child { border-bottom: none; }
+
+    .sig-check { color: #3fb950; font-size: 10px; flex-shrink: 0; }
+    .sig-name  { font-size: 10px; color: #a0a8b8; width: 72px; flex-shrink: 0; }
+    .sig-detail{ font-size: 10px; color: #4a5060; flex: 1; }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 1px;
+      background: #161820;
+    }
+
+    .checkout-col {
+      background: #0e1016;
+      padding: 14px 16px 12px;
+    }
+
+    .co-section-label {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #e8a020;
+      margin-bottom: 8px;
+    }
+
+    .co-rule { height: 1px; background: #1e2028; margin: 10px 0 8px; }
+
+    .win-row {
+      display: flex;
+      gap: 8px;
+      padding: 5px 0;
+      border-bottom: 1px solid #161820;
+    }
+
+    .win-row:last-child { border-bottom: none; }
+    .win-emoji { font-size: 11px; flex-shrink: 0; }
+    .win-text  { font-size: 10px; color: #7a8090; line-height: 1.55; }
+    .win-text em { color: #a0a8b8; font-style: normal; }
+
+    .pillar-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      padding: 5px 0;
+      border-bottom: 1px solid #161820;
+    }
+
+    .pillar-row:last-child { border-bottom: none; }
+
+    .pdot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .dot-strong   { background: #3fb950; }
+    .dot-active   { background: #58a6c8; }
+    .dot-moderate { background: #e8a020; }
+
+    .pname {
+      font-size: 10px;
+      color: #a0a8b8;
+      width: 80px;
+      flex-shrink: 0;
+    }
+
+    .pstrength {
+      font-size: 9px;
+      color: #636878;
+      width: 52px;
+      flex-shrink: 0;
+    }
+
+    .pnote {
+      font-size: 10px;
+      color: #4a5060;
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .thread-row {
+      display: flex;
+      gap: 7px;
+      padding: 5px 0;
+      border-bottom: 1px solid #161820;
+    }
+
+    .thread-row:last-child { border-bottom: none; }
+    .t-dot  { font-size: 10px; flex-shrink: 0; }
+    .t-text { font-size: 10px; color: #636878; line-height: 1.5; }
+    .t-text em { color: #a0a8b8; font-style: normal; }
+
+    .missed-row {
+      padding: 5px 0;
+      border-bottom: 1px solid #161820;
+    }
+
+    .missed-row:last-child { border-bottom: none; }
+
+    .missed-text {
+      font-size: 10px;
+      color: #4a5060;
+      line-height: 1.5;
+    }
+
+    .missed-text em { color: #8a9090; font-style: normal; }
+
+    .confirmed-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: #161820;
+    }
+
+    .confirmed-col {
+      background: #0e1016;
+      padding: 14px 16px 12px;
+    }
+
+    .cal-banner {
+      background: #0d1a10;
+      border: 1px solid #1e4a28;
+      border-radius: 3px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+
+    .cal-label {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #3fb950;
+      margin-bottom: 6px;
+    }
+
+    .cal-body {
+      font-size: 10.5px;
+      color: #5a8060;
+      line-height: 1.6;
+    }
+
+    .cal-body em { color: #a0c8a8; font-style: normal; }
+
+    .cal-row {
+      display: flex;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1px solid #161820;
+    }
+
+    .cal-row:last-child { border-bottom: none; }
+    .cal-category { font-size: 9px; color: #e8a020; width: 68px; flex-shrink: 0; }
+    .cal-detail   { font-size: 10px; color: #636878; flex: 1; line-height: 1.4; }
+    .cal-detail em{ color: #a0a8b8; font-style: normal; }
+
+    .rating-banner {
+      margin-top: 12px;
+      background: #0d1a10;
+      border: 1px solid #1e4a28;
+      border-radius: 3px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .rating-y {
+      font-size: 13px;
+      font-weight: 700;
+      color: #3fb950;
+    }
+
+    .rating-label {
+      font-size: 10px;
+      color: #5a8060;
+    }
+
+    .status-mini {
+      background: #1c1f27;
+      border-top: 1px solid #252830;
+      padding: 7px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .sm-item {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: #636878;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .sm-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #e8a020;
+      box-shadow: 0 0 4px rgba(232,160,32,0.5);
+    }
+
+    .sm-dot-green {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #3fb950;
+      box-shadow: 0 0 4px rgba(63,185,80,0.5);
+    }
+
+    /* REPORT PREVIEW SECTION */
+    .report-section {
+      padding: 64px 64px;
+      background: var(--paper);
+      border-top: 1px solid var(--rule);
+    }
+
+    .report-section .section-header { margin-bottom: 12px; }
+
+    .report-section-intro {
+      font-size: 14px;
+      font-weight: 300;
+      color: #5a5650;
+      max-width: 680px;
+      line-height: 1.65;
+      margin-bottom: 36px;
+    }
+
+    .report-card {
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+
+    .report-file-bar {
+      background: #2a2d38;
+      padding: 0 20px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .report-filename {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: #a0a8b8;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .report-filename::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 14px;
+      background: #3fb950;
+      clip-path: polygon(0 0, 70% 0, 100% 30%, 100% 100%, 0 100%);
+      opacity: 0.7;
+    }
+
+    .download-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #0e1016;
+      background: #3fb950;
+      border: none;
+      padding: 5px 14px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .download-btn:hover { opacity: 0.85; }
+
+    .report-body {
+      background: #ffffff;
+      padding: 40px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .report-col {}
+
+    .report-frontmatter {
+      background: #f4f2ed;
+      border: 1px solid #e4e0d8;
+      border-radius: 3px;
+      padding: 16px 18px;
+      margin-bottom: 28px;
+    }
+
+    .report-frontmatter pre {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: #6a6660;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .report-frontmatter pre .yaml-key { color: #8a4020; }
+    .report-frontmatter pre .yaml-val { color: #3a6a3a; }
+
+    .report-h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .report-h2 {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 20px 0 10px;
+    }
+
+    .report-h2:first-of-type { margin-top: 0; }
+
+    .report-rule { height: 1px; background: #e8e4dc; margin: 16px 0; }
+
+    .report-ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .report-ul li {
+      font-size: 12.5px;
+      font-weight: 300;
+      color: #3a3830;
+      line-height: 1.6;
+      padding: 5px 0 5px 14px;
+      border-bottom: 1px solid #f0ece4;
+      position: relative;
+    }
+
+    .report-ul li:last-child { border-bottom: none; }
+
+    .report-ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+
+    .report-ul li em {
+      font-style: normal;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+    }
+
+    .report-table td {
+      font-size: 11.5px;
+      font-weight: 300;
+      color: #3a3830;
+      padding: 6px 8px 6px 0;
+      border-bottom: 1px solid #f0ece4;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .report-table td:last-child { border-bottom: none; }
+    .report-table td:first-child { padding-bottom: 0; }
+
+    .report-table tr:last-child td { border-bottom: none; }
+
+    .report-table .tpillar { color: var(--ink); font-weight: 400; width: 90px; }
+    .report-table .tstrength { width: 58px; font-family: 'DM Mono', monospace; font-size: 10px; }
+    .report-table .tstrength-strong { color: #2a7a3a; }
+    .report-table .tstrength-active { color: #2a5a8a; }
+    .report-table .tstrength-moderate { color: #8a6a10; }
+    .report-table .tnote { color: #6a6660; }
+
+    .report-thread-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      padding: 5px 0;
+      border-bottom: 1px solid #f0ece4;
+    }
+
+    .report-thread-row:last-child { border-bottom: none; }
+
+    .rthread-dot { font-size: 10px; flex-shrink: 0; padding-top: 2px; }
+    .rthread-text { font-size: 12px; font-weight: 300; color: #3a3830; line-height: 1.5; }
+
+    .report-cal-grid {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 0;
+    }
+
+    .report-cal-row {
+      display: contents;
+    }
+
+    .report-cal-row > * {
+      padding: 5px 0;
+      border-bottom: 1px solid #f0ece4;
+      font-size: 11.5px;
+      line-height: 1.5;
+    }
+
+    .report-cal-row:last-child > * { border-bottom: none; }
+
+    .rcal-key { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); padding-right: 10px; }
+    .rcal-val { font-weight: 300; color: #3a3830; }
+
+    .report-plan-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 5px 0;
+      border-bottom: 1px solid #f0ece4;
+    }
+
+    .report-plan-row:last-child { border-bottom: none; }
+    .rplan-icon { font-size: 12px; flex-shrink: 0; padding-top: 2px; }
+    .rplan-text { font-size: 12px; font-weight: 300; color: #3a3830; line-height: 1.5; }
+    .rplan-text strong { font-weight: 500; color: var(--ink); }
+
+    @media (max-width: 900px) {
+      .report-body { grid-template-columns: 1fr; gap: 24px; }
+    }
+
+    @media (max-width: 768px) {
+      .masthead, .deck, .grid-section, .prereq-section, .platform-section, .report-section { padding-left: 24px; padding-right: 24px; }
+      .masthead { flex-direction: column; align-items: flex-start; }
+      .masthead-meta { display: none; }
+      .prereq-grid, .platform-grid { grid-template-columns: 1fr; }
+      .outcome-strip { margin: 0 24px; grid-template-columns: 1fr; }
+      .outcome-list { grid-template-columns: 1fr; }
+      footer { padding: 24px 24px 0; flex-direction: column; gap: 12px; text-align: center; }
+      .example-section { padding: 40px 24px; }
+      .checkout-grid, .confirmed-grid { grid-template-columns: 1fr; }
+      .report-body { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead-left">
+      <div class="label">Claude Code &mdash; Command System</div>
+      <h1>The<br/>Helm</h1>
+      <p class="tagline">Personal Goals and Weekly Rhythm System. Five commands. One closed-loop system that turns your week into a record and your record into a plan.</p>
+    </div>
+    <div class="masthead-meta">
+      <div class="edition">Commands &nbsp;/&nbsp; Rhythm Series</div>
+    </div>
+  </header>
+
+  <!-- DECK -->
+  <div class="deck">
+    <div class="deck-rule"></div>
+    <p>Five commands that form a personal goals and weekly rhythm system: plan on Sunday, review on Friday, take a monthly pulse, score the quarter, plan the next one. Each command reads what the previous one wrote. The longer you run it, the sharper it gets.</p>
+  </div>
+
+  <!-- PREREQUISITES -->
+  <section class="prereq-section">
+    <div class="prereq-header">
+      <h2>Before You Build</h2>
+    </div>
+
+    <p class="prereq-intro">
+      The Helm reads signals. Before it can synthesize anything useful, it needs to know who you are and what you are working toward. Start with the <a href="https://dataalchemie.github.io/wendy-builds/bod/personal-os-intake.html" target="_blank">Personal OS Intake</a> if you have not already set up your context files. Point your agent at this page and have it build out the system for you based on what your task management and storage systems are.
+    </p>
+
+    <div class="prereq-grid">
+
+      <div class="prereq-item">
+        <div class="prereq-num">START HERE &nbsp;01</div>
+        <div class="prereq-title">Personal OS Intake</div>
+        <div class="prereq-body">
+          The intake captures what the system needs to know about you: your goals, your four pillars, your connected accounts, and enough context that the agent can read your signals accurately. Run this before building any command.
+          <br/><br/>
+          <a href="https://dataalchemie.github.io/wendy-builds/bod/personal-os-intake.html" target="_blank">Open the Personal OS Intake &rarr;</a>
+        </div>
+      </div>
+
+      <div class="prereq-item">
+        <div class="prereq-num">REQUIRED &nbsp;02</div>
+        <div class="prereq-title">Annual Goals</div>
+        <div class="prereq-body">
+          Every command in this system reads your annual goals file before it synthesizes anything. Without it, weekly reviews have no target to compare against and quarterly planning has no direction to carry forward. Define your year in one file before running any command.
+          <span class="prereq-required">Required input</span>
+        </div>
+      </div>
+
+      <div class="prereq-item">
+        <div class="prereq-num">REQUIRED &nbsp;03</div>
+        <div class="prereq-title">Your Four Pillars</div>
+        <div class="prereq-body">
+          The weekly review organizes everything you did into four life areas. The default pillars are Professional, Family, Health, and Community &mdash; but they should reflect your actual life. Define your four pillars in the intake so every report is organized around what matters to you.
+          <span class="prereq-required">Required input</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROMPT CARDS -->
+  <section class="grid-section">
+    <div class="section-header">
+      <h2>The Command Sequence</h2>
+    </div>
+
+    <div class="cards">
+
+      <!-- 01 -->
+      <div class="card">
+        <div class="card-num">01</div>
+        <div class="card-title">Plan the Week <span style="font-size:14px;font-weight:400;color:var(--accent);font-family:'DM Mono',monospace;">/weekly-checkin</span></div>
+        <div class="card-body">Three focused priorities beat ten scattered intentions. Run this Sunday and the agent reads your open tasks and upcoming calendar against your quarterly goals, then debates with you until you commit to a Top 3. What you lock here is what Friday's review holds you to.</div>
+        <div class="card-tags">
+          <span>Sunday</span><span>Commitment</span><span>Top 3</span>
+        </div>
+        <div class="prompt-label" style="margin-top:20px;">Use this prompt</div>
+        <blockquote>
+          <p>You are a skilled Chief of Staff and accountability partner. I have four life pillars &mdash; Professional, Family, Health, and Community &mdash; and my annual goals are defined in [paste your goals file or describe them here]. Your job is to help me set a focused, defensible plan each week based on what matters most right now. Build me a /weekly-checkin command. Every Sunday, read my Google Tasks list and calendar for the week ahead. Compare what is due to my current quarter's goals. Propose a committed Top 3 for the week with rationale &mdash; no more than three, one sentence each. Debate with me until I confirm the list, then lock it and save it as a log file named checkin-YYYY-MM-DD.md.</p>
+        </blockquote>
+      </div>
+
+      <!-- 02 -->
+      <div class="card">
+        <div class="card-num">02</div>
+        <div class="card-title">Review the Week <span style="font-size:14px;font-weight:400;color:var(--accent);font-family:'DM Mono',monospace;">/weekly-checkout</span></div>
+        <div class="card-body">An honest account of what actually moved. Reads signals you left across the week &mdash; emails sent, tasks closed, AI session logs &mdash; and lays them out by pillar. It finds things you forgot you did and threads you quietly left open. Your word is the final record.</div>
+        <div class="card-tags">
+          <span>Friday</span><span>Signal Synthesis</span><span>Confirmed Record</span>
+        </div>
+        <div class="prompt-label" style="margin-top:20px;">Use this prompt</div>
+        <blockquote>
+          <p>You are a skilled Chief of Staff. I have four life pillars &mdash; Professional, Family, Health, and Community &mdash; and I track my week across sent Gmail, completed Google Tasks, and AI session logs. Your job is to synthesize what actually happened each week honestly, not what I intended. Build me a /weekly-checkout command. Every Friday, read my sent Gmail from the last 7 days, completed tasks, and session logs. Synthesize wins organized by my four pillars. Surface open threads I committed to but haven't closed, and inbound items I haven't replied to. Show me a draft, then ask for my confirmed top wins before writing the final log.</p>
+        </blockquote>
+      </div>
+
+      <!-- 03 -->
+      <div class="card">
+        <div class="card-num">03</div>
+        <div class="card-title">Take a Pulse Check <span style="font-size:14px;font-weight:400;color:var(--accent);font-family:'DM Mono',monospace;">/pulse-check</span></div>
+        <div class="card-body">Once a month, the agent reads the full log record and comes prepared before you say a word. One through-line claim. One warning flag: green, yellow, or red. One question worth sitting with going into the next four weeks. You correct it, it updates, then it gets written.</div>
+        <div class="card-tags">
+          <span>Monthly</span><span>Through-Line</span><span>Warning Flag</span>
+        </div>
+        <div class="prompt-label" style="margin-top:20px;">Use this prompt</div>
+        <blockquote>
+          <p>You are a skilled Chief of Staff conducting a monthly executive review. I have four life pillars and quarterly goals. My weekly checkout logs are saved as checkout-YYYY-MM-DD.md files. Your job is to come prepared with an independent read before I say anything &mdash; I want your honest synthesis, not a reflection of my own framing. Build me a /pulse-check command. Once a month, read all my checkout logs for the past 30 days and my current quarter's goals. Before I say anything, write an independent prepared read: what moved, what stalled, what the month was really about. Present it, take my corrections, flag the month GREEN, YELLOW, or RED, and write the result to a vault file.</p>
+        </blockquote>
+      </div>
+
+      <!-- 04 -->
+      <div class="card">
+        <div class="card-num">04</div>
+        <div class="card-title">Score the Quarter <span style="font-size:14px;font-weight:400;color:var(--accent);font-family:'DM Mono',monospace;">/score-okrs</span></div>
+        <div class="card-body">Scores built from evidence, not memory. Every Key Result gets a case drawn from the actual log record, then a mandatory challenge pass that argues against whatever score you give. The retrospective it produces is what next quarter's planning starts from.</div>
+        <div class="card-tags">
+          <span>Quarter-End</span><span>Evidence-Based</span><span>Devil's Advocate</span>
+        </div>
+        <div class="prompt-label" style="margin-top:20px;">Use this prompt</div>
+        <blockquote>
+          <p>You are a rigorous Chief of Staff and accountability partner. I have quarterly goals and a full set of weekly checkout logs for the period. Your job is to build the scoring case from the actual log record &mdash; not my memory &mdash; and then challenge every score I try to give. Build me a /score-okrs command. At the end of a quarter, load all my checkout logs for that period plus my goal plan and any prior reviews. Score each Key Result with evidence from the actual logs. After I provide a score, run a devil's advocate pass that challenges it. Once all scores are confirmed, write a vault-ready quarterly retrospective.</p>
+        </blockquote>
+      </div>
+
+      <!-- 05 -->
+      <div class="card">
+        <div class="card-num">05</div>
+        <div class="card-title">Plan the Next Quarter <span style="font-size:14px;font-weight:400;color:var(--accent);font-family:'DM Mono',monospace;">/draft-okrs</span></div>
+        <div class="card-body">Starts from what the logs say actually happened, not what you intended. Loads the retrospective and recent plans, then drafts goals you can defend by pointing at evidence. Flags overreach and underreach before you commit. Iterates until you lock the quarter.</div>
+        <div class="card-tags">
+          <span>Forward Planning</span><span>Carry Forward</span><span>Lock</span>
+        </div>
+        <div class="prompt-label" style="margin-top:20px;">Use this prompt</div>
+        <blockquote>
+          <p>You are a skilled Chief of Staff helping me set the next quarter's direction. I have annual goals, a completed quarterly retrospective, and recent checkout logs. Your job is to draft goals I can defend by pointing at evidence, not goals I aspire to and abandon. Build me a /draft-okrs command. Before a new quarter begins, load my annual goals, the prior quarter's retrospective, my last two checkout logs, and my most recent weekly plan. Draft next quarter's goals with rationale grounded in carry-forward momentum and open gaps. Run a devil's advocate pass that flags overreach and underreach. Iterate with me until I lock the plan, then write a vault-ready document.</p>
+        </blockquote>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PLATFORM SECTION -->
+  <section class="platform-section">
+    <div class="section-header">
+      <h2>Works Where You Work</h2>
+    </div>
+    <p class="platform-intro">The prompts above are portable. Paste them into any of these environments and the commands run the same way. Data integrations (Gmail, Tasks, Calendar) require API setup, but the conversation logic runs anywhere.</p>
+    <div class="platform-grid">
+
+      <div class="platform-card">
+        <div class="platform-badge">Anthropic</div>
+        <div class="platform-name">Claude.ai</div>
+        <div class="platform-note">Paste the prompt in any conversation. No setup required to start. Best for trying the system before building automations.</div>
+      </div>
+
+      <div class="platform-card">
+        <div class="platform-badge">Anthropic</div>
+        <div class="platform-name">Claude Code CLI</div>
+        <div class="platform-note">Full command system with file read/write, API access, and script execution. The setup shown in this guide is built for this environment.</div>
+      </div>
+
+      <div class="platform-card">
+        <div class="platform-badge">Anthropic</div>
+        <div class="platform-name">Claude Desktop</div>
+        <div class="platform-note">Runs locally with MCP server support. Connect Gmail, Calendar, and Tasks directly without separate API setup scripts.</div>
+      </div>
+
+      <div class="platform-card">
+        <div class="platform-badge">OpenAI</div>
+        <div class="platform-name">Codex</div>
+        <div class="platform-note">Prompts translate directly. Swap Claude-specific tool references for Codex equivalents. The persona and logic structure are fully portable.</div>
+      </div>
+
+      <div class="platform-card">
+        <div class="platform-badge">Google</div>
+        <div class="platform-name">Gemini / Antigravity</div>
+        <div class="platform-note">Runs via the Gemini CLI or Antigravity. Native Google Workspace integration makes Gmail, Tasks, and Calendar especially easy to wire up.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXAMPLE SESSION -->
+  <section class="example-section">
+    <div class="section-header">
+      <h2>Live Session Example</h2>
+    </div>
+
+    <p class="example-intro">
+      Here is a real checkout session, start to finish. Signal pull, synthesized output across
+      four pillars, confirmed wins, and calibration &mdash; all from a single
+      <em>/weekly-checkout</em> invocation.
+    </p>
+
+    <div class="trio-wrapper">
+
+      <!-- TERMINAL 1: SIGNAL PULL -->
+      <div class="trio-item">
+        <div class="terminal-phase">
+          <span class="phase-num">Phase 01</span>
+          <span class="phase-name">Signal Pull</span>
+        </div>
+        <div class="mini-term">
+          <div class="mini-term-bar">
+            <div class="mini-dots">
+              <div class="mini-dot md-r"></div>
+              <div class="mini-dot md-y"></div>
+              <div class="mini-dot md-g"></div>
+            </div>
+            <div class="mini-tab">jordan@helm &mdash; ~/helm</div>
+          </div>
+          <div class="mini-term-body">
+            <div class="t-prompt">
+              <span class="t-arrow">&#10095;</span>
+              <span class="t-cmd">/weekly-checkout</span>
+            </div>
+            <div class="t-label">Pulling Signals &mdash; Jun 22 to Jun 28</div>
+            <div class="t-rule"></div>
+            <div class="signal-row">
+              <span class="sig-check">&#10003;</span>
+              <span class="sig-name">Gmail</span>
+              <span class="sig-detail">14 sent messages scanned</span>
+            </div>
+            <div class="signal-row">
+              <span class="sig-check">&#10003;</span>
+              <span class="sig-name">Tasks</span>
+              <span class="sig-detail">22 completed this week</span>
+            </div>
+            <div class="signal-row">
+              <span class="sig-check">&#10003;</span>
+              <span class="sig-name">Sessions</span>
+              <span class="sig-detail">4 AI projects scanned</span>
+            </div>
+            <div class="signal-row">
+              <span class="sig-check">&#10003;</span>
+              <span class="sig-name">Calendar</span>
+              <span class="sig-detail">9 events (5 or fewer attendees)</span>
+            </div>
+            <div class="signal-row">
+              <span class="sig-check">&#10003;</span>
+              <span class="sig-name">Prior Plan</span>
+              <span class="sig-detail">checkin-2026-06-21.md loaded</span>
+            </div>
+            <div style="margin-top:14px;" class="t-body">Synthesizing&hellip;</div>
+          </div>
+          <div class="status-mini">
+            <div class="sm-item"><div class="sm-dot"></div>5 signals active</div>
+            <div class="sm-item" style="margin-left:auto;">Week of Jun 22</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trio-arrow">&#8595;</div>
+
+      <!-- TERMINAL 2: CHECKOUT OUTPUT -->
+      <div class="trio-item">
+        <div class="terminal-phase">
+          <span class="phase-num">Phase 02</span>
+          <span class="phase-name">Checkout Output &mdash; Wins, Pillars, Open Threads</span>
+        </div>
+        <div class="mini-term">
+          <div class="mini-term-bar">
+            <div class="mini-dots">
+              <div class="mini-dot md-r"></div>
+              <div class="mini-dot md-y"></div>
+              <div class="mini-dot md-g"></div>
+            </div>
+            <div class="mini-tab">jordan@helm &mdash; Week of Jun 22 to Jun 28</div>
+          </div>
+
+          <div class="checkout-grid">
+            <div class="checkout-col">
+              <div class="co-section-label">Wins of the Week</div>
+              <div class="win-row">
+                <span class="win-emoji">&#127881;</span>
+                <span class="win-text">Reached <em>Marcus Chen at Vantage Partners</em> on the board advisory track &mdash; first contact with a governance-focused search firm</span>
+              </div>
+              <div class="win-row">
+                <span class="win-emoji">&#127881;</span>
+                <span class="win-text">Submitted director application to <em>Clearfield Foundation</em>, citing AI strategy background &mdash; Q3's first formal board submission</span>
+              </div>
+              <div class="win-row">
+                <span class="win-emoji">&#127881;</span>
+                <span class="win-text">LinkedIn post on product decision frameworks attracted inbound from <em>Dana Reyes at Nova Recruiting</em> &mdash; content-to-conversation conversion</span>
+              </div>
+
+              <div class="co-rule"></div>
+              <div class="co-section-label">What I May Have Missed</div>
+              <div class="missed-row">
+                <span class="missed-text">Mentorship session request &middot; <em>Alex Tran at Founder Mentors</em> &middot; 4 days</span>
+              </div>
+              <div class="missed-row">
+                <span class="missed-text">Partnership intro email &middot; <em>Robin Shah at Clearfield Foundation</em> &middot; 2 days</span>
+              </div>
+            </div>
+
+            <div class="checkout-col">
+              <div class="co-section-label">Pillar Alignment</div>
+              <div class="pillar-row">
+                <div class="pdot dot-strong"></div>
+                <span class="pname">Professional</span>
+                <span class="pstrength" style="color:#3fb950;">Strong</span>
+                <span class="pnote">Reached Marcus Chen at Vantage, submitted Clearfield app, shipped Q2 product review</span>
+              </div>
+              <div class="pillar-row">
+                <div class="pdot dot-active"></div>
+                <span class="pname">Community</span>
+                <span class="pstrength" style="color:#58a6c8;">Active</span>
+                <span class="pnote">Attended Founder Mentors cohort kickoff, followed up on nonprofit board application</span>
+              </div>
+              <div class="pillar-row">
+                <div class="pdot dot-moderate"></div>
+                <span class="pname">Health</span>
+                <span class="pstrength" style="color:#e8a020;">Moderate</span>
+                <span class="pnote">Two gym sessions logged, Thursday run skipped, nutrition on track</span>
+              </div>
+              <div class="pillar-row">
+                <div class="pdot dot-active"></div>
+                <span class="pname">Family</span>
+                <span class="pstrength" style="color:#58a6c8;">Active</span>
+                <span class="pnote">Weekend visit to parents completed, Sam's birthday dinner scheduled for next week</span>
+              </div>
+
+              <div class="co-rule"></div>
+              <div class="co-section-label">Open Threads</div>
+              <div class="thread-row">
+                <span class="t-dot" style="color:#ff5f57;">&#9679;</span>
+                <span class="t-text">Waiting on board candidacy update sent to <em>Clearfield Foundation</em> &mdash; 3 days ago</span>
+              </div>
+              <div class="thread-row">
+                <span class="t-dot" style="color:#e8a020;">&#9679;</span>
+                <span class="t-text">Owe reply to <em>Dana Reyes (Nova Recruiting)</em> on scheduling &mdash; 1 day ago</span>
+              </div>
+              <div class="thread-row">
+                <span class="t-dot" style="color:#4a5060;">&#9675;</span>
+                <span class="t-text">Building: checkin-to-OKR feedback loop not yet wired in Helm system</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="status-mini">
+            <div class="sm-item"><div class="sm-dot"></div>Draft ready</div>
+            <div class="sm-item">What are your top wins this week?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trio-arrow">&#8595;</div>
+
+      <!-- TERMINAL 3: CONFIRMED WINS + CALIBRATION -->
+      <div class="trio-item">
+        <div class="terminal-phase">
+          <span class="phase-num">Phase 03</span>
+          <span class="phase-name">Confirmed Wins and Calibration</span>
+        </div>
+        <div class="mini-term">
+          <div class="mini-term-bar">
+            <div class="mini-dots">
+              <div class="mini-dot md-r"></div>
+              <div class="mini-dot md-y"></div>
+              <div class="mini-dot md-g"></div>
+            </div>
+            <div class="mini-tab">Confirmed Record &mdash; Week of Jun 22</div>
+          </div>
+
+          <div class="confirmed-grid">
+            <div class="confirmed-col">
+              <div class="co-section-label">Top Wins (Confirmed)</div>
+              <div class="win-row">
+                <span class="win-text" style="color:#e2e4e9;">Vantage Partners conversation started &mdash; first governance-focused search firm in the pipeline</span>
+              </div>
+              <div class="win-row">
+                <span class="win-text" style="color:#e2e4e9;">Clearfield Foundation application submitted &mdash; Q3's first formal board submission</span>
+              </div>
+              <div class="win-row">
+                <span class="win-text" style="color:#e2e4e9;">LinkedIn content converted to a recruiter inbound from Dana Reyes at Nova Recruiting &mdash; the content strategy is working</span>
+              </div>
+
+              <div class="co-rule"></div>
+              <div class="co-section-label">Additional Wins (from your CoS)</div>
+              <div class="win-row">
+                <span class="win-emoji">&#127881;</span>
+                <span class="win-text">Completed Q2 product review and distributed to stakeholders &mdash; a shipped deliverable not named in confirmed wins</span>
+              </div>
+            </div>
+
+            <div class="confirmed-col">
+              <div class="co-section-label">Calibration</div>
+              <div class="cal-banner">
+                <div class="cal-label">Signal Read</div>
+                <div class="cal-body">
+                  CoS got the three core wins right. Missed the
+                  <em>weekend family trip completion</em> as a Family pillar win
+                  &mdash; it landed in calendar but not in the synthesized output.
+                </div>
+              </div>
+
+              <div class="cal-row">
+                <span class="cal-category">Got right</span>
+                <span class="cal-detail">Vantage Partners, Clearfield Foundation, <em>Nova Recruiting inbound</em></span>
+              </div>
+              <div class="cal-row">
+                <span class="cal-category">Missed</span>
+                <span class="cal-detail">Weekend family visit to parents &mdash; <em>Family pillar win not surfaced</em></span>
+              </div>
+              <div class="cal-row">
+                <span class="cal-category">Added by CoS</span>
+                <span class="cal-detail">Q2 product review as a shipped deliverable</span>
+              </div>
+              <div class="cal-row">
+                <span class="cal-category">Turn count</span>
+                <span class="cal-detail">3 turns from prompt to confirmation</span>
+              </div>
+
+              <div class="rating-banner">
+                <span class="rating-y">y</span>
+                <span class="rating-label">Good signal read &mdash; calibration logged</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="status-mini">
+            <div class="sm-item"><div class="sm-dot-green"></div>Checkout log written</div>
+            <div class="sm-item">Viewer updated</div>
+            <div class="sm-item" style="margin-left:auto;">2026-06-28</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- REPORT PREVIEW SECTION -->
+  <section class="report-section">
+    <div class="section-header">
+      <h2>The Record It Writes</h2>
+    </div>
+    <p class="report-section-intro">
+      Each of the five commands writes its own structured log. This is what <strong>/weekly-checkout</strong> produces: a Markdown file saved to your vault, readable in any editor, Obsidian, or Notion. Download the example to see the full format.
+    </p>
+
+    <div class="report-card">
+      <div class="report-file-bar">
+        <div class="report-filename">checkout-2026-06-28.md</div>
+        <button class="download-btn" onclick="downloadReport()">&#8595; Download Example</button>
+      </div>
+      <div class="report-body">
+
+        <!-- Left column -->
+        <div class="report-col">
+          <div class="report-frontmatter">
+            <pre><span class="yaml-key">type:</span>       <span class="yaml-val">checkout</span>
+<span class="yaml-key">date:</span>       <span class="yaml-val">2026-06-28</span>
+<span class="yaml-key">week_of:</span>    <span class="yaml-val">Jun 22 to Jun 28, 2026</span>
+<span class="yaml-key">signals:</span>
+  <span class="yaml-key">gmail:</span>    <span class="yaml-val">ok</span>
+  <span class="yaml-key">tasks:</span>    <span class="yaml-val">ok</span>
+  <span class="yaml-key">calendar:</span> <span class="yaml-val">ok</span>
+  <span class="yaml-key">sessions:</span> <span class="yaml-val">ok</span></pre>
+          </div>
+
+          <div class="report-h1">Weekly Checkout &mdash; Jun 22 to Jun 28</div>
+
+          <div class="report-h2">Confirmed Wins</div>
+          <ul class="report-ul">
+            <li>&#127881; Vantage Partners conversation started &mdash; first governance-focused search firm in the pipeline</li>
+            <li>&#127881; Clearfield Foundation board application submitted &mdash; Q3's first formal board submission</li>
+            <li>&#127881; LinkedIn post converted to recruiter inbound from Dana Reyes at Nova Recruiting</li>
+          </ul>
+
+          <div class="report-h2">Additional Wins (from CoS)</div>
+          <ul class="report-ul">
+            <li>Completed Q2 product review and distributed to stakeholders <em>(shipped deliverable not named in confirmed wins)</em></li>
+          </ul>
+
+          <div class="report-rule"></div>
+
+          <div class="report-h2">Plan vs. Actual</div>
+          <div class="report-plan-row">
+            <span class="rplan-icon">&#9989;</span>
+            <span class="rplan-text"><strong>Board pipeline activation</strong> &mdash; Clearfield application submitted and Vantage Partners first contact made</span>
+          </div>
+          <div class="report-plan-row">
+            <span class="rplan-icon">&#9888;&#65039;</span>
+            <span class="rplan-text"><strong>Health targets</strong> &mdash; two gym sessions logged, 150-minute target not met, Thursday run skipped</span>
+          </div>
+          <div class="report-plan-row">
+            <span class="rplan-icon">&#9989;</span>
+            <span class="rplan-text"><strong>Content strategy</strong> &mdash; LinkedIn post generated recruiter inbound, confirming content-to-conversation conversion</span>
+          </div>
+
+          <div class="report-rule"></div>
+
+          <div class="report-h2">Calibration</div>
+          <div class="report-cal-grid">
+            <div class="report-cal-row">
+              <div class="rcal-key">Rating</div>
+              <div class="rcal-val">y &mdash; good signal read</div>
+            </div>
+            <div class="report-cal-row">
+              <div class="rcal-key">Got right</div>
+              <div class="rcal-val">Vantage Partners, Clearfield Foundation, Nova Recruiting inbound</div>
+            </div>
+            <div class="report-cal-row">
+              <div class="rcal-key">Missed</div>
+              <div class="rcal-val">Weekend family visit &mdash; Family pillar win not surfaced in draft</div>
+            </div>
+            <div class="report-cal-row">
+              <div class="rcal-key">Added</div>
+              <div class="rcal-val">Q2 product review as a shipped deliverable</div>
+            </div>
+            <div class="report-cal-row">
+              <div class="rcal-key">Turns</div>
+              <div class="rcal-val">3 turns from prompt to confirmation</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div class="report-col">
+
+          <div class="report-h2">Pillar Alignment</div>
+          <table class="report-table">
+            <tr>
+              <td class="tpillar">Professional</td>
+              <td class="tstrength tstrength-strong">Strong</td>
+              <td class="tnote">Vantage outreach, Clearfield app, Q2 review shipped</td>
+            </tr>
+            <tr>
+              <td class="tpillar">Community</td>
+              <td class="tstrength tstrength-active">Active</td>
+              <td class="tnote">Founder Mentors cohort kickoff, nonprofit board follow-up</td>
+            </tr>
+            <tr>
+              <td class="tpillar">Health</td>
+              <td class="tstrength tstrength-moderate">Moderate</td>
+              <td class="tnote">Two gym sessions, Thursday run skipped, nutrition on track</td>
+            </tr>
+            <tr>
+              <td class="tpillar">Family</td>
+              <td class="tstrength tstrength-active">Active</td>
+              <td class="tnote">Weekend visit to parents, Sam's birthday dinner scheduled</td>
+            </tr>
+          </table>
+
+          <div class="report-rule"></div>
+
+          <div class="report-h2">Open Threads</div>
+          <div class="report-thread-row">
+            <span class="rthread-dot" style="color:#c0392b;">&#9679;</span>
+            <span class="rthread-text">Waiting on board candidacy update &mdash; Clearfield Foundation &mdash; 3 days ago</span>
+          </div>
+          <div class="report-thread-row">
+            <span class="rthread-dot" style="color:#e8a020;">&#9679;</span>
+            <span class="rthread-text">Owe reply to Dana Reyes (Nova Recruiting) on scheduling &mdash; 1 day ago</span>
+          </div>
+          <div class="report-thread-row">
+            <span class="rthread-dot" style="color:#aaa;">&#9675;</span>
+            <span class="rthread-text">Building: checkin-to-OKR feedback loop not yet wired</span>
+          </div>
+
+          <div class="report-rule"></div>
+
+          <div class="report-h2">What I May Have Missed</div>
+          <ul class="report-ul">
+            <li>Mentorship session request &middot; Alex Tran at Founder Mentors &middot; <em>4 days</em></li>
+            <li>Partnership intro email &middot; Robin Shah at Clearfield Foundation &middot; <em>2 days</em></li>
+          </ul>
+
+          <div class="report-rule"></div>
+
+          <div class="report-h2">Details &mdash; Career &amp; Authority</div>
+          <ul class="report-ul">
+            <li>Reached Marcus Chen at Vantage Partners &mdash; first outreach to a governance-focused search firm</li>
+            <li>Submitted director application to Clearfield Foundation citing AI strategy background</li>
+            <li>Shipped Q2 product review and distributed to four stakeholders</li>
+            <li>Sent AI curriculum proposal to Kevin Walsh at Meridian Learning &mdash; first EdTech outreach this quarter</li>
+          </ul>
+
+          <div class="report-h2">Details &mdash; Community &amp; Network</div>
+          <ul class="report-ul">
+            <li>Attended Founder Mentors cohort kickoff with Alex Tran and three other founders</li>
+            <li>Followed up on nonprofit board application with Robin Shah at Clearfield Foundation</li>
+            <li>LinkedIn post on product frameworks generated 1,200 impressions and one recruiter inbound</li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTCOME STRIP -->
+  <div class="outcome-strip">
+    <div class="outcome-label">
+      <em>What you end up with</em>
+      When the rhythm is running
+    </div>
+    <ul class="outcome-list">
+      <li>
+        <strong>Five deployed commands</strong>
+        Plan the week, review it, take a pulse, score the quarter, plan the next one &mdash; one system across every cadence.
+      </li>
+      <li>
+        <strong>A signal-to-plan loop</strong>
+        Review logs feed the weekly plan. Weekly plans feed the quarterly score. Each command reads what the previous one wrote.
+      </li>
+      <li>
+        <strong>Pillar accountability</strong>
+        Professional, Family, Health, and Community tracked every week with a calibration signal that sharpens over time.
+      </li>
+      <li>
+        <strong>Quarterly memory</strong>
+        Scores and plans build on each other across quarters. The system knows what you committed to and what actually happened.
+      </li>
+    </ul>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-mark">The Helm</div>
+    <div class="footer-note">Personal Goals and Weekly Rhythm System &nbsp;&bull;&nbsp; Claude Code Demo Project</div>
+  </footer>
+
+  <script>
+    function downloadReport() {
+      const content = `---
+type: checkout
+date: 2026-06-28
+week_of: Jun 22 to Jun 28, 2026
+signals:
+  gmail: ok
+  tasks: ok
+  calendar: ok
+  sessions: ok
+---
+
+# Weekly Checkout — Jun 22 to Jun 28, 2026
+
+---
+
+## Confirmed Wins
+
+- Vantage Partners conversation started — first governance-focused search firm in the pipeline
+- Clearfield Foundation board application submitted — Q3's first formal board submission
+- LinkedIn post on product decision frameworks converted to recruiter inbound from Dana Reyes at Nova Recruiting — the content strategy is working
+
+## Additional Wins (from CoS)
+
+- Completed Q2 product review and distributed to four stakeholders — a shipped deliverable not named in confirmed wins
+
+---
+
+## Plan vs. Actual
+
+✅ **Board pipeline activation** — Clearfield application submitted and Vantage Partners first contact made
+⚠️ **Health targets** — two gym sessions logged, 150-minute movement target not met, Thursday run skipped
+✅ **Content strategy** — LinkedIn post generated recruiter inbound, confirming content-to-conversation conversion
+
+---
+
+## Pillar Alignment
+
+| Pillar | Strength | Note |
+|---|---|---|
+| Professional | Strong | Vantage outreach, Clearfield application, Q2 review shipped |
+| Community | Active | Founder Mentors cohort kickoff attended, nonprofit board follow-up sent |
+| Health | Moderate | Two gym sessions logged, Thursday run skipped, nutrition on track |
+| Family | Active | Weekend visit to parents completed, Sam's birthday dinner scheduled |
+
+---
+
+## Open Threads
+
+- 🔴 Waiting on board candidacy update — Clearfield Foundation — 3 days ago
+- 🟡 Owe reply to Dana Reyes (Nova Recruiting) on scheduling — 1 day ago
+- ⚪ Building: checkin-to-OKR feedback loop not yet wired in Helm system
+
+## What I May Have Missed
+
+- Mentorship session request · Alex Tran at Founder Mentors · 4 days
+- Partnership intro email · Robin Shah at Clearfield Foundation · 2 days
+
+---
+
+## Details — Professional
+
+- Reached Marcus Chen at Vantage Partners — first contact with a governance-focused search firm
+- Submitted director application to Clearfield Foundation citing AI strategy background
+- Shipped Q2 product review and distributed to stakeholders
+- Sent AI curriculum proposal to Kevin Walsh at Meridian Learning — first EdTech outreach this quarter
+
+## Details — Community
+
+- Attended Founder Mentors cohort kickoff with Alex Tran and three other founders
+- Followed up on nonprofit board application with Robin Shah at Clearfield Foundation
+- LinkedIn post on product frameworks generated 1,200 impressions and one recruiter inbound
+
+## Details — Health
+
+- Two gym sessions logged (Monday and Wednesday)
+- Thursday run skipped — rescheduled to Saturday
+- Nutrition on track, hydration targets met 5 of 7 days
+
+## Details — Family
+
+- Weekend visit to parents completed
+- Sam's birthday dinner scheduled for July 3
+
+---
+
+## Calibration
+
+- **Signal rating:** y
+- **Got right:** Vantage Partners, Clearfield Foundation, Nova Recruiting inbound
+- **Missed:** Weekend family visit — Family pillar win not surfaced in draft output
+- **Added by CoS:** Q2 product review as a shipped deliverable
+- **Turn count:** 3 turns from prompt to confirmation
+- **Commentary:** System surfaced the Q2 review — a completed deliverable that had been forgotten. Also flagged the Dana Reyes reply as an immediate quick-close action.
+- **Value signal:** high — surfaced forgotten win and prompted action on open thread
+`;
+
+      const blob = new Blob([content], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'checkout-2026-06-28.md';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+
+</body>
+</html>
