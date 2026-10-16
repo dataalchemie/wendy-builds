@@ -2,7 +2,7 @@
 
 **Building in public.** AI tools I designed, built, and use — shared as open resources.
 
-Built by [Wendy-Kay Logan](https://dataalchemie.github.io/wendy-builds/) — AI Chief Product & Strategy Executive, Board Director.
+Built by [Wendy-Kay Logan](https://dataalchemie.github.io/wendy-builds/) — Chief Product & Strategy Executive, Board Director.
 
 ---
 
